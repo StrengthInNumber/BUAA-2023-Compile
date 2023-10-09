@@ -33,10 +33,12 @@ public class ConstDecl extends ASTNode {
         bType = new BType(tokens.getNowToken());
         tokens.nextToken();
         ConstDef constDef = new ConstDef(tokens);
+        constDef.parse();
         constDefs.add(constDef);
         tt = tokens.getNowTokenType();
         while(tt == TokenType.COMMA){
             constDef = new ConstDef(tokens);
+            constDef.parse();
             constDefs.add(constDef);
             tt = tokens.getNowTokenType();
         }

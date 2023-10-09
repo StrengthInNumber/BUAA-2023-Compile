@@ -1,5 +1,6 @@
 package Frontend.Parser.DeclAndDef.Constant;
 
+import Frontend.Lexer.Token.Token;
 import Frontend.Lexer.Token.TokenType;
 import Frontend.Parser.ASTNode;
 import Frontend.Parser.Expression.AddExp;
@@ -18,13 +19,29 @@ public class ConstInitVal extends ASTNode {
     public ConstInitVal(TokensReadControl tokens){
         super(tokens);
         constInitVals = new ArrayList<>();
+        flag = 0;
     }
     public void parse(){
-        if(tokens.getNowTokenType() == TokenType.LBRACK){
+        if(tokens.getNowTokenType() == TokenType.LBRACE){
             tokens.nextToken();
-            if(tokens.ge)
+            flag = 1;
+            if(tokens.getNowTokenType() != TokenType.RBRACE){
+                ConstInitVal constInitVal = new ConstInitVal(tokens);
+                constInitVal.parse();
+                constInitVals.add(constInitVal);
+                while(tokens.getNowTokenType() == TokenType.COMMA){
+                    constInitVal = new ConstInitVal(tokens);
+                    constInitVal.parse();
+                    constInitVals.add(constInitVal);
+                }
+            }
+            if(tokens.getNowTokenType() != TokenType.RBRACE){
+                printError();
+            }
+            tokens.nextToken();
         } else {
             constExp = new ConstExp(tokens);
+            constExp.parse();
             flag = 0;
         }
     }
