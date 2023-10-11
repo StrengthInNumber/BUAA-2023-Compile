@@ -4,6 +4,7 @@ import Check.CompilerError;
 import Check.ErrorType;
 import Frontend.Lexer.Token.TokenType;
 import Frontend.Parser.ASTNode;
+import Frontend.Parser.DeclAndDef.Constant.ConstInitVal;
 import Frontend.Parser.Expression.ConstExp;
 import Frontend.Parser.Terminator.Ident;
 import Frontend.TokensReadControl;
@@ -26,20 +27,39 @@ public class VarDef extends ASTNode {
 
     public void parse() throws CompilerError {
         ident = new Ident(tokens.getNowToken());
+        tokens.nextToken();
         while(tokens.getNowTokenType() == TokenType.LBRACK){
             tokens.nextToken();
             ConstExp constExp = new ConstExp(tokens);
             constExp.parse();
             constExps.add(constExp);
+            if(tokens.getNowTokenType() != TokenType.RBRACK){
+                throw new CompilerError(ErrorType.MISS_RBRACK, tokens.getNowTokenLineNum());
+            }else {
+                tokens.nextToken();
+            }
         }
-        if(tokens.getNowTokenType() != TokenType.RBRACK){
-            throw new CompilerError(ErrorType.MISS_RBRACK, tokens.getNowTokenLineNum());
-        }
-        tokens.nextToken();
         if(tokens.getNowTokenType() == TokenType.ASSIGN){
+            tokens.nextToken();
             flag = 1;
             initVal = new InitVal(tokens);
             initVal.parse();
         }
+    }
+
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(ident);
+        for(ConstExp cd : constExps){
+            sb.append("LBRACK [\n");
+            sb.append(cd);
+            sb.append("RBRACK ]\n");
+        }
+        if(flag == 1){
+            sb.append("ASSIGN =\n");
+            sb.append(initVal);
+        }
+        sb.append("<VarDef>\n");
+        return sb.toString();
     }
 }

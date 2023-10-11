@@ -5,6 +5,7 @@ import Check.ErrorType;
 import Frontend.Lexer.Token.TokenType;
 import Frontend.Parser.ASTNode;
 import Frontend.Parser.BlockAndStmt.Block;
+import Frontend.Parser.DeclAndDef.Variate.InitVal;
 import Frontend.Parser.Terminator.FuncType;
 import Frontend.Parser.Terminator.Ident;
 import Frontend.TokensReadControl;
@@ -33,12 +34,28 @@ public class FuncDef extends ASTNode {
         if(tokens.getNowTokenType() == TokenType.INTTK){
             funcFParams = new FuncFParams(tokens);
             funcFParams.parse();
+            flag = 1;
         }
         if(tokens.getNowTokenType() != TokenType.RPARENT){
             throw new CompilerError(ErrorType.MISS_RPARENT, tokens.getNowTokenLineNum());
+        } else {
+            tokens.nextToken();
         }
-        tokens.nextToken();
         block = new Block(tokens);
         block.parse();
+    }
+
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        sb.append(funcType);
+        sb.append(ident);
+        sb.append("LPARENT (\n");
+        if(flag == 1){
+            sb.append(funcFParams);
+        }
+        sb.append("RPARENT )\n");
+        sb.append(block);
+        sb.append("<FuncDef>\n");
+        return sb.toString();
     }
 }

@@ -7,11 +7,11 @@ import Frontend.Lexer.Token.TokenType;
 import Frontend.Parser.ASTNode;
 import Frontend.TokensReadControl;
 
-public class ContinueStmt extends ASTNode implements StmtOpt{
+public class ContinueOpt extends ASTNode implements StmtOpt{
     //ContinueStmt → "continue" ";"
     private Token continueTK;
 
-    public ContinueStmt(TokensReadControl tokens) {
+    public ContinueOpt(TokensReadControl tokens) {
         super(tokens);
     }
 
@@ -23,7 +23,12 @@ public class ContinueStmt extends ASTNode implements StmtOpt{
         tokens.nextToken();
         if (tokens.getNowTokenType() != TokenType.SEMICN) {
             throw new CompilerError(ErrorType.MISS_SEMICOLON, tokens.getNowTokenLineNum());
+        } else {
+            tokens.nextToken();
         }
-        tokens.nextToken();
+    }
+
+    public String toString(){
+        return "CONTINUETK continue\n" + "SEMICN ;\n";
     }
 }

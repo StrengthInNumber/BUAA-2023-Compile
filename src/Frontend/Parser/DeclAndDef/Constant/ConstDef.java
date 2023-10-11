@@ -18,28 +18,44 @@ public class ConstDef extends ASTNode {
     private ArrayList<ConstExp> constExps;
     private ConstInitVal constInitVal;
 
-    public ConstDef(TokensReadControl tokens){
+    public ConstDef(TokensReadControl tokens) {
         super(tokens);
         constExps = new ArrayList<>();
     }
 
     public void parse() throws CompilerError {
-        ident  = new Ident(tokens.getNowToken());
+        ident = new Ident(tokens.getNowToken());
         tokens.nextToken();
-        while(tokens.getNowTokenType() == TokenType.LBRACK){
+        while (tokens.getNowTokenType() == TokenType.LBRACK) {
             tokens.nextToken();
-            ConstExp constExp = new AddExp(tokens);
+            ConstExp constExp = new ConstExp(tokens);
             constExp.parse();
             constExps.add(constExp);
-            if(tokens.getNowTokenType() != TokenType.RBRACK){
+            if (tokens.getNowTokenType() != TokenType.RBRACK) {
                 throw new CompilerError(ErrorType.MISS_RBRACK, tokens.getNowTokenLineNum());
+            } else {
+                tokens.nextToken();
             }
-            tokens.nextToken();
         }
-        if(tokens.getNowTokenType() != TokenType.ASSIGN){
+        if (tokens.getNowTokenType() != TokenType.ASSIGN) {
             printError();
         }
         tokens.nextToken();
         constInitVal = new ConstInitVal(tokens);
+        constInitVal.parse();
+    }
+
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(ident);
+        for(ConstExp ce : constExps){
+            sb.append("LBRACK [\n");
+            sb.append(ce);
+            sb.append("RBRACK ]\n");
+        }
+        sb.append("ASSIGN =\n");
+        sb.append(constInitVal);
+        sb.append("<ConstDef>\n");
+        return sb.toString();
     }
 }

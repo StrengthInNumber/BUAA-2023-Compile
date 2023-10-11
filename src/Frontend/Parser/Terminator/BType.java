@@ -9,4 +9,8 @@ public class BType {
         this.token = token;
         assert token.getType() == TokenType.INTTK;
     }
+
+    public String toString() {
+        return token.toString();
+    }
 }

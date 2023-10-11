@@ -25,7 +25,6 @@ public class Lexer {
         curPos = -1;
         lineNum = 0;
         tokens = new ArrayList<>();
-        tokensIndex = 0;
 
         reservedWords = new HashMap<>();
         reservedWords.put("main", TokenType.MAINTK);

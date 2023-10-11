@@ -29,9 +29,21 @@ public class MainFuncDef extends ASTNode {
         tokens.nextToken();
         if(tokens.getNowTokenType() != TokenType.RPARENT){
             throw new CompilerError(ErrorType.MISS_RPARENT, tokens.getNowTokenLineNum());
+        }else {
+            tokens.nextToken();
         }
-        tokens.nextToken();
         block = new Block(tokens);
         block.parse();
+    }
+
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        sb.append("INTTK int\n");
+        sb.append("MAINTK main\n");
+        sb.append("LPARENT (\n");
+        sb.append("RPARENT )\n");
+        sb.append(block);
+        sb.append("<MainFuncDef>\n");
+        return sb.toString();
     }
 }

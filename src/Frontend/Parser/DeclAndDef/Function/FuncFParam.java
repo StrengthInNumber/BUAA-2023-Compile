@@ -18,10 +18,12 @@ public class FuncFParam extends ASTNode {
     private BType bType;
     private Ident ident;
     private ArrayList<ConstExp> constExps;
+    private int flag; //0-普通变量 1-一维数组 2-二维数组
 
     public FuncFParam(TokensReadControl tokens){
         super(tokens);
         constExps = new ArrayList<>();
+        flag = 0;
     }
 
     public void parse() throws CompilerError {
@@ -30,21 +32,42 @@ public class FuncFParam extends ASTNode {
         ident = new Ident(tokens.getNowToken());
         tokens.nextToken();
         if(tokens.getNowTokenType() == TokenType.LBRACK){
+            flag = 1;
             tokens.nextToken();
             if(tokens.getNowTokenType() != TokenType.RBRACK){
                 throw new CompilerError(ErrorType.MISS_RBRACK, tokens.getNowTokenLineNum());
+            } else {
+                tokens.nextToken();
             }
-            tokens.nextToken();
             while(tokens.getNowTokenType() == TokenType.LBRACK){
+                flag = 2;
                 tokens.nextToken();
                 ConstExp constExp = new ConstExp(tokens);
                 constExp.parse();
                 constExps.add(constExp);
                 if(tokens.getNowTokenType() != TokenType.RBRACK){
                     throw new CompilerError(ErrorType.MISS_RBRACK, tokens.getNowTokenLineNum());
+                } else {
+                    tokens.nextToken();
                 }
-                tokens.nextToken();
             }
         }
+    }
+
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        sb.append(bType);
+        sb.append(ident);
+        if(flag != 0){
+            sb.append("LBRACK [\n");
+            sb.append("RBRACK ]\n");
+            for(ConstExp ce : constExps){
+                sb.append("LBRACK [\n");
+                sb.append(ce);
+                sb.append("RBRACK ]\n");
+            }
+        }
+        sb.append("<FuncFParam>\n");
+        return sb.toString();
     }
 }

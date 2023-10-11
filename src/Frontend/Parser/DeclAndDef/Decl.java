@@ -30,4 +30,13 @@ public class Decl extends ASTNode {
             printError();
         }
     }
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        if(flag == 0){
+            sb.append(constDecl.toString());
+        } else {
+            sb.append(varDecl.toString());
+        }
+        return sb.toString();
+    }
 }

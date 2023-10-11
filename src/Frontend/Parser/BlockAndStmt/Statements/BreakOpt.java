@@ -7,11 +7,11 @@ import Frontend.Lexer.Token.TokenType;
 import Frontend.Parser.ASTNode;
 import Frontend.TokensReadControl;
 
-public class BreakStmt extends ASTNode implements StmtOpt {
+public class BreakOpt extends ASTNode implements StmtOpt {
     //BreakStmt → 'break' ';'
     private Token breakTK;
 
-    public BreakStmt(TokensReadControl tokens) {
+    public BreakOpt(TokensReadControl tokens) {
         super(tokens);
     }
 
@@ -23,7 +23,12 @@ public class BreakStmt extends ASTNode implements StmtOpt {
         tokens.nextToken();
         if (tokens.getNowTokenType() != TokenType.SEMICN) {
             throw new CompilerError(ErrorType.MISS_SEMICOLON, tokens.getNowTokenLineNum());
+        } else {
+            tokens.nextToken();
         }
-        tokens.nextToken();
+    }
+
+    public String toString(){
+        return "BREAKTK break\nSEMICN ;\n";
     }
 }

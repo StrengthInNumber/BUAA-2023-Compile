@@ -10,12 +10,12 @@ import Frontend.TokensReadControl;
 
 import java.util.ArrayList;
 
-public class PrintfStmt extends ASTNode implements StmtOpt{
+public class PrintfOpt extends ASTNode implements StmtOpt{
     //PrintfStmt → 'printf''('FormatString{','Exp}')'';'
     // 1.有Exp 2.无Exp
     public Token formatString;
     public ArrayList<Exp> exps;
-    public PrintfStmt(TokensReadControl tokens){
+    public PrintfOpt(TokensReadControl tokens){
         super(tokens);
         exps = new ArrayList<>();
     }
@@ -40,9 +40,28 @@ public class PrintfStmt extends ASTNode implements StmtOpt{
             exp.parse();
             exps.add(exp);
         }
-        if (tokens.getNowTokenType() != TokenType.SEMICN) {
-            throw new CompilerError(ErrorType.MISS_SEMICOLON, tokens.getNowTokenLineNum());
+        if(tokens.getNowTokenType() != TokenType.RPARENT){
+            printError();
         }
         tokens.nextToken();
+        if (tokens.getNowTokenType() != TokenType.SEMICN) {
+            throw new CompilerError(ErrorType.MISS_SEMICOLON, tokens.getNowTokenLineNum());
+        } else {
+            tokens.nextToken();
+        }
+    }
+
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        sb.append("PRINTFTK printf\n");
+        sb.append("LPARENT (\n");
+        sb.append(formatString);
+        for(Exp e : exps){
+            sb.append("COMMA ,\n");
+            sb.append(e);
+        }
+        sb.append("RPARENT )\n");
+        sb.append("SEMICN ;\n");
+        return sb.toString();
     }
 }

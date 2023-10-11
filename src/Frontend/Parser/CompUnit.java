@@ -44,4 +44,17 @@ public class CompUnit extends ASTNode {
         mainFuncDef = new MainFuncDef(tokens);
         mainFuncDef.parse();
     }
+
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        for(Decl decl: decls){
+            sb.append(decl.toString());
+        }
+        for(FuncDef funcDef: funcDefs){
+            sb.append(funcDef.toString());
+        }
+        sb.append(mainFuncDef.toString());
+        sb.append("<CompUnit>\n");
+        return sb.toString();
+    }
 }

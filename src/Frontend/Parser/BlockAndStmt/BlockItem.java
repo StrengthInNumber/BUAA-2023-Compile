@@ -29,4 +29,14 @@ public class BlockItem extends ASTNode {
             flag = 1;
         }
     }
+
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        if(flag == 0){
+            sb.append(decl);
+        } else {
+            sb.append(stmt);
+        }
+        return sb.toString();
+    }
 }

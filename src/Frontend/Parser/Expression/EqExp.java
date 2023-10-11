@@ -9,42 +9,41 @@ import Frontend.TokensReadControl;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-public class AddExp extends ASTNode {
-    private ArrayList<MulExp> mulExps;
+public class EqExp extends ASTNode {
+    private ArrayList<RelExp> relExps;
     private ArrayList<Token> optList;
     private HashSet<TokenType> opts;
-
-    public AddExp(TokensReadControl tokens) {
+    public EqExp(TokensReadControl tokens){
         super(tokens);
-        mulExps = new ArrayList<>();
+        relExps = new ArrayList<>();
         optList = new ArrayList<>();
         opts = new HashSet<>();
-        opts.add(TokenType.PLUS);
-        opts.add(TokenType.MINU);
+        opts.add(TokenType.EQL);
+        opts.add(TokenType.NEQ);
     }
 
     public void parse() throws CompilerError {
-        MulExp mulExp = new MulExp(tokens);
-        mulExp.parse();
-        mulExps.add(mulExp);
+        RelExp relExp = new RelExp(tokens);
+        relExp.parse();
+        relExps.add(relExp);
         optList.add(null);
-        while (opts.contains(tokens.getNowTokenType())) {
+        while(opts.contains(tokens.getNowTokenType())){
             optList.add(tokens.getNowToken());
             tokens.nextToken();
-            mulExp = new MulExp(tokens);
-            mulExp.parse();
-            mulExps.add(mulExp);
+            relExp = new RelExp(tokens);
+            relExp.parse();
+            relExps.add(relExp);
         }
     }
 
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(mulExps.get(0));
-        sb.append("<AddExp>\n");
-        for (int i = 1; i < mulExps.size(); i++) {
+        sb.append(relExps.get(0));
+        sb.append("<EqExp>\n");
+        for (int i = 1; i < relExps.size(); i++) {
             sb.append(optList.get(i));
-            sb.append(mulExps.get(i));
-            sb.append("<AddExp>\n");
+            sb.append(relExps.get(i));
+            sb.append("<EqExp>\n");
         }
         return sb.toString();
     }

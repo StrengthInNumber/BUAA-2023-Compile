@@ -33,4 +33,12 @@ public class TokensReadControl {
     public int getNowTokenLineNum(){
         return tokens.get(nowIndex).getLineNum();
     }
+
+    public int getNowIndex() {
+        return nowIndex;
+    }
+
+    public void setNowIndex(int nowIndex) {
+        this.nowIndex = nowIndex;
+    }
 }

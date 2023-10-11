@@ -9,42 +9,43 @@ import Frontend.TokensReadControl;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-public class AddExp extends ASTNode {
-    private ArrayList<MulExp> mulExps;
+public class RelExp extends ASTNode {
+    private ArrayList<AddExp> addExps;
     private ArrayList<Token> optList;
     private HashSet<TokenType> opts;
-
-    public AddExp(TokensReadControl tokens) {
+    public RelExp(TokensReadControl tokens){
         super(tokens);
-        mulExps = new ArrayList<>();
+        addExps = new ArrayList<>();
         optList = new ArrayList<>();
         opts = new HashSet<>();
-        opts.add(TokenType.PLUS);
-        opts.add(TokenType.MINU);
+        opts.add(TokenType.GRE);
+        opts.add(TokenType.LSS);
+        opts.add(TokenType.GEQ);
+        opts.add(TokenType.LEQ);
     }
 
     public void parse() throws CompilerError {
-        MulExp mulExp = new MulExp(tokens);
-        mulExp.parse();
-        mulExps.add(mulExp);
+        AddExp addExp = new AddExp(tokens);
+        addExp.parse();
+        addExps.add(addExp);
         optList.add(null);
-        while (opts.contains(tokens.getNowTokenType())) {
+        while(opts.contains(tokens.getNowTokenType())){
             optList.add(tokens.getNowToken());
             tokens.nextToken();
-            mulExp = new MulExp(tokens);
-            mulExp.parse();
-            mulExps.add(mulExp);
+            addExp = new AddExp(tokens);
+            addExp.parse();
+            addExps.add(addExp);
         }
     }
 
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(mulExps.get(0));
-        sb.append("<AddExp>\n");
-        for (int i = 1; i < mulExps.size(); i++) {
+        sb.append(addExps.get(0));
+        sb.append("<RelExp>\n");
+        for (int i = 1; i < addExps.size(); i++) {
             sb.append(optList.get(i));
-            sb.append(mulExps.get(i));
-            sb.append("<AddExp>\n");
+            sb.append(addExps.get(i));
+            sb.append("<RelExp>\n");
         }
         return sb.toString();
     }

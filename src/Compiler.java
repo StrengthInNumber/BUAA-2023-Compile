@@ -1,11 +1,13 @@
 import Check.CompilerError;
 import Frontend.Lexer.Lexer;
+import Frontend.Parser.Parser;
+import Frontend.TokensReadControl;
 
 import java.io.*;
 import java.util.Scanner;
 
 public class Compiler {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, CompilerError{
         InputStream stream1 = System.in;
         InputStream stream2;
         try {
@@ -21,17 +23,16 @@ public class Compiler {
         }
         //System.out.print(sb);
         Lexer lexer = new Lexer(sb.toString());
-        try {
-            lexer.run();
-        } catch (CompilerError e) {
-            throw new RuntimeException(e);
-        }
+        lexer.run();
+        Parser parser = new Parser(new TokensReadControl(lexer.getTokens()));
+        parser.parse();
         File file = new File("output.txt");
         if(!file.exists()) {
             file.createNewFile();
         }
         PrintWriter pw = new PrintWriter(new FileWriter("output.txt"));
-        pw.print(lexer);
+        //pw.print(lexer);
+        pw.print(parser);
         pw.close();
     }
 }

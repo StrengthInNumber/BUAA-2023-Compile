@@ -9,12 +9,12 @@ import Frontend.TokensReadControl;
 
 import java.util.HashSet;
 
-public class ExpStmt extends ASTNode implements StmtOpt{
+public class ExpOpt extends ASTNode implements StmtOpt {
     //ExpsStmt → [Exp] ';'
     // 有无Exp两种情况
     private Exp exp;
 
-    public ExpStmt(TokensReadControl tokens) {
+    public ExpOpt(TokensReadControl tokens) {
         super(tokens);
         exp = null;
     }
@@ -27,14 +27,23 @@ public class ExpStmt extends ASTNode implements StmtOpt{
         expFIRST.add(TokenType.LPARENT);
         expFIRST.add(TokenType.IDENFR);
         expFIRST.add(TokenType.INTCON);
-        if(expFIRST.contains(tokens.getNowTokenType())){
+        if (expFIRST.contains(tokens.getNowTokenType())) {
             exp = new Exp(tokens);
             exp.parse();
         }
         if (tokens.getNowTokenType() != TokenType.SEMICN) {
             throw new CompilerError(ErrorType.MISS_SEMICOLON, tokens.getNowTokenLineNum());
+        } else {
+            tokens.nextToken();
         }
-        tokens.nextToken();
+    }
 
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        if(exp != null){
+            sb.append(exp);
+        }
+        sb.append("SEMICN ;\n");
+        return sb.toString();
     }
 }

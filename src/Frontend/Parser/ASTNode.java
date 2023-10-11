@@ -10,6 +10,6 @@ public class ASTNode {
     }
 
     protected void printError() {
-        System.out.print("in line " + tokens.getNowTokenLineNum() + "wrong in parsing " + tokens.getNowToken());
+        System.out.print("in line " + tokens.getNowTokenLineNum() + " wrong in parsing " + tokens.getNowToken());
     }
 }
