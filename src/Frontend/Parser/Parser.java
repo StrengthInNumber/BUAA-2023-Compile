@@ -15,6 +15,9 @@ public class Parser {
         compUnit.parse();
     }
 
+    public void checkError(){
+        compUnit.checkError();
+    }
     public String toString(){
         return compUnit.toString();
     }

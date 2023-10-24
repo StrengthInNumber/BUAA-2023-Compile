@@ -1,10 +1,12 @@
 package Frontend.Parser.DeclAndDef.Variate;
 
 import Check.CompilerError;
-import Check.ErrorType;
+import Check.Error.Error;
+import Check.Error.ErrorTable;
+import Check.Error.ErrorType;
+import Check.Symbol.SymbolTable;
 import Frontend.Lexer.Token.TokenType;
 import Frontend.Parser.ASTNode;
-import Frontend.Parser.DeclAndDef.Constant.ConstInitVal;
 import Frontend.Parser.Terminator.BType;
 import Frontend.TokensReadControl;
 
@@ -33,12 +35,18 @@ public class VarDecl extends ASTNode {
             varDefs.add(vd);
         }
         if(tokens.getNowTokenType() != TokenType.SEMICN){
-            throw new CompilerError(ErrorType.MISS_SEMICOLON, tokens.getNowTokenLineNum());
+            ErrorTable.getInstance().addError(new Error(tokens.getLastTokenLineNum(), ErrorType.MISS_SEMICN));
         } else {
             tokens.nextToken();
         }
     }
 
+    public void checkError(SymbolTable table){
+        varDef.checkError(table, bType.getValueType());
+        for(VarDef vd : varDefs){
+            vd.checkError(table, bType.getValueType());
+        }
+    }
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(bType);

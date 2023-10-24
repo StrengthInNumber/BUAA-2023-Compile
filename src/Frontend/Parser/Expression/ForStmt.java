@@ -1,6 +1,10 @@
 package Frontend.Parser.Expression;
 
 import Check.CompilerError;
+import Check.Error.Error;
+import Check.Error.ErrorTable;
+import Check.Error.ErrorType;
+import Check.Symbol.SymbolTable;
 import Frontend.Lexer.Token.TokenType;
 import Frontend.Parser.ASTNode;
 import Frontend.TokensReadControl;
@@ -8,6 +12,7 @@ import Frontend.TokensReadControl;
 public class ForStmt extends ASTNode {
     private LVal lVal;
     private Exp exp;
+    private int lineNum;
 
     public ForStmt(TokensReadControl tokens) {
         super(tokens);
@@ -20,8 +25,17 @@ public class ForStmt extends ASTNode {
         if (tokens.getNowTokenType() != TokenType.ASSIGN) {
             printError();
         }
+        lineNum = tokens.getNowTokenLineNum();
         tokens.nextToken();
         exp.parse();
+    }
+
+    public void checkError(SymbolTable table) {
+        if (lVal.isConst(table)) {
+            ErrorTable.getInstance().addError(new Error(lineNum, ErrorType.CHANGE_CONST_VALUE));
+        }
+        lVal.checkError(table);
+        exp.checkError(table);
     }
 
     public String toString() {

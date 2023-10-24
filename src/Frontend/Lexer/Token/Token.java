@@ -18,6 +18,10 @@ public class Token {
         return lineNum;
     }
 
+    public String getContent() {
+        return content;
+    }
+
     public String toString(){
         return type.toString() + ' ' + content + '\n';
     }

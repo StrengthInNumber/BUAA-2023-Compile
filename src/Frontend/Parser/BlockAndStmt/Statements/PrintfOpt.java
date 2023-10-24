@@ -1,7 +1,10 @@
 package Frontend.Parser.BlockAndStmt.Statements;
 
 import Check.CompilerError;
-import Check.ErrorType;
+import Check.Error.Error;
+import Check.Error.ErrorTable;
+import Check.Error.ErrorType;
+import Check.Symbol.SymbolTable;
 import Frontend.Lexer.Token.Token;
 import Frontend.Lexer.Token.TokenType;
 import Frontend.Parser.ASTNode;
@@ -15,6 +18,7 @@ public class PrintfOpt extends ASTNode implements StmtOpt{
     // 1.有Exp 2.无Exp
     public Token formatString;
     public ArrayList<Exp> exps;
+    public int lineNum;
     public PrintfOpt(TokensReadControl tokens){
         super(tokens);
         exps = new ArrayList<>();
@@ -24,6 +28,7 @@ public class PrintfOpt extends ASTNode implements StmtOpt{
         if(tokens.getNowTokenType() != TokenType.PRINTFTK){
             printError();
         }
+        lineNum = tokens.getNowTokenLineNum();
         tokens.nextToken();
         if(tokens.getNowTokenType() != TokenType.LPARENT){
             printError();
@@ -41,13 +46,28 @@ public class PrintfOpt extends ASTNode implements StmtOpt{
             exps.add(exp);
         }
         if(tokens.getNowTokenType() != TokenType.RPARENT){
-            printError();
+            ErrorTable.getInstance().addError(new Error(tokens.getNowTokenLineNum(), ErrorType.MISS_RPARENT));
         }
         tokens.nextToken();
         if (tokens.getNowTokenType() != TokenType.SEMICN) {
-            throw new CompilerError(ErrorType.MISS_SEMICOLON, tokens.getNowTokenLineNum());
+            //throw new CompilerError(ErrorType.MISS_SEMICN, tokens.getNowTokenLineNum());
+            ErrorTable.getInstance().addError(new Error(tokens.getLastTokenLineNum(), ErrorType.MISS_SEMICN));
         } else {
             tokens.nextToken();
+        }
+    }
+
+    @Override
+    public void checkError(SymbolTable table) {
+        String s = formatString.getContent();
+        int count = 0;
+        for(int i = 0; i < s.length() - 1; i++){
+            if(s.charAt(i) == '%' && s.charAt(i + 1) == 'd'){
+                count++;
+            }
+        }
+        if(count != exps.size()){
+            ErrorTable.getInstance().addError(new Error(lineNum, ErrorType.FORM_STRING_MISMATCH));
         }
     }
 

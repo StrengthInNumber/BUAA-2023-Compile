@@ -1,6 +1,7 @@
 package Frontend.Parser;
 
 import Check.CompilerError;
+import Check.Symbol.SymbolTable;
 import Frontend.Lexer.Token.Token;
 import Frontend.Lexer.Token.TokenType;
 import Frontend.Parser.DeclAndDef.Decl;
@@ -15,11 +16,13 @@ public class CompUnit extends ASTNode {
     private ArrayList<Decl> decls;
     private ArrayList<FuncDef> funcDefs;
     private MainFuncDef mainFuncDef;
+    private SymbolTable symbolTable;
 
     public CompUnit(TokensReadControl tokens) {
         super(tokens);
         decls = new ArrayList<>();
         funcDefs = new ArrayList<>();
+        symbolTable = new SymbolTable(null, 0);
     }
 
     public void parse() throws CompilerError {
@@ -43,6 +46,16 @@ public class CompUnit extends ASTNode {
         //MainFuncDef
         mainFuncDef = new MainFuncDef(tokens);
         mainFuncDef.parse();
+    }
+
+    public void checkError(){
+        for(Decl decl: decls){
+            decl.checkError(symbolTable);
+        }
+        for(FuncDef funcDef: funcDefs){
+            funcDef.checkError(symbolTable);
+        }
+        mainFuncDef.checkError(symbolTable);
     }
 
     public String toString(){

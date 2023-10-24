@@ -1,6 +1,7 @@
 package Frontend.Parser.BlockAndStmt;
 
 import Check.CompilerError;
+import Check.Symbol.SymbolTable;
 import Frontend.Lexer.Token.TokenType;
 import Frontend.Parser.ASTNode;
 import Frontend.Parser.BlockAndStmt.Statements.*;
@@ -17,7 +18,7 @@ public class Stmt extends ASTNode {
 
     public void parse() throws CompilerError {
         switch (tokens.getNowTokenType()){
-            case TokenType.IDENFR:
+            case IDENFR:
                 int check = tokens.getNowIndex();
                 Exp temp = new Exp(tokens);
                 temp.parse();
@@ -29,25 +30,25 @@ public class Stmt extends ASTNode {
                     stmtOpt = new ExpOpt(tokens);
                 }
                 break;
-            case TokenType.LBRACE:
-                stmtOpt = new Block(tokens);
+            case LBRACE:
+                stmtOpt = new BlockOpt(tokens);
                 break;
-            case TokenType.IFTK:
+            case IFTK:
                 stmtOpt = new IfOpt(tokens);
                 break;
-            case TokenType.FORTK:
+            case FORTK:
                 stmtOpt = new ForOpt(tokens);
                 break;
-            case TokenType.BREAKTK:
+            case BREAKTK:
                 stmtOpt = new BreakOpt(tokens);
                 break;
-            case TokenType.CONTINUETK:
+            case CONTINUETK:
                 stmtOpt = new ContinueOpt(tokens);
                 break;
-            case TokenType.RETURNTK:
+            case RETURNTK:
                 stmtOpt = new ReturnOpt(tokens);
                 break;
-            case TokenType.PRINTFTK:
+            case PRINTFTK:
                 stmtOpt = new PrintfOpt(tokens);
                 break;
             default:
@@ -56,7 +57,13 @@ public class Stmt extends ASTNode {
         }
         stmtOpt.parse();
     }
+    public void checkError(SymbolTable table){
+        stmtOpt.checkError(table);
+    }
 
+    public boolean isReturnStmt(){
+        return stmtOpt instanceof ReturnOpt;
+    }
     public String toString(){
         return stmtOpt.toString() + "<Stmt>\n";
     }

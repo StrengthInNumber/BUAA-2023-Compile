@@ -1,7 +1,8 @@
 package Frontend.Parser.BlockAndStmt.Statements;
 
 import Check.CompilerError;
-import Check.ErrorType;
+import Check.Error.ErrorType;
+import Check.Symbol.SymbolTable;
 import Frontend.Lexer.Token.TokenType;
 import Frontend.Parser.ASTNode;
 import Frontend.Parser.BlockAndStmt.Stmt;
@@ -38,7 +39,7 @@ public class ForOpt extends ASTNode implements StmtOpt{
             forStmt1.parse();
         }
         if (tokens.getNowTokenType() != TokenType.SEMICN) {
-            throw new CompilerError(ErrorType.MISS_SEMICOLON, tokens.getNowTokenLineNum());
+            throw new CompilerError(ErrorType.MISS_SEMICN, tokens.getNowTokenLineNum());
         } else {
             tokens.nextToken();
         }
@@ -47,7 +48,7 @@ public class ForOpt extends ASTNode implements StmtOpt{
             cond.parse();
         }
         if (tokens.getNowTokenType() != TokenType.SEMICN) {
-            throw new CompilerError(ErrorType.MISS_SEMICOLON, tokens.getNowTokenLineNum());
+            throw new CompilerError(ErrorType.MISS_SEMICN, tokens.getNowTokenLineNum());
         } else {
             tokens.nextToken();
         }
@@ -61,6 +62,22 @@ public class ForOpt extends ASTNode implements StmtOpt{
             tokens.nextToken();
         }
         stmt.parse();
+    }
+
+    @Override
+    public void checkError(SymbolTable table) {
+        if(forStmt1 != null){
+            forStmt1.checkError(table);
+        }
+        if(cond != null){
+            cond.checkError(table);
+        }
+        if(forStmt2 != null){
+            forStmt2.checkError(table);
+        }
+        table.setInCircle(true);
+        stmt.checkError(table);
+        table.setInCircle(false);
     }
 
     public String toString(){

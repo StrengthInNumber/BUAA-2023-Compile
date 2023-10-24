@@ -1,19 +1,20 @@
-package Frontend.Parser.BlockAndStmt;
+package Frontend.Parser.BlockAndStmt.Statements;
 
 import Check.CompilerError;
 import Check.Symbol.SymbolTable;
 import Frontend.Lexer.Token.TokenType;
 import Frontend.Parser.ASTNode;
-import Frontend.Parser.BlockAndStmt.Statements.StmtOpt;
+import Frontend.Parser.BlockAndStmt.BlockItem;
 import Frontend.TokensReadControl;
 
 import java.util.ArrayList;
 
-public class Block extends ASTNode implements StmtOpt {
+public class BlockOpt extends ASTNode implements StmtOpt {
     //语句块 Block → '{' { BlockItem } '}'
     // 1.花括号内重复0次 2.花括号内重复多次
     private ArrayList<BlockItem> blockItems;
-    public Block(TokensReadControl tokens){
+    private SymbolTable symbolTable;
+    public BlockOpt(TokensReadControl tokens){
         super(tokens);
         blockItems = new ArrayList<>();
     }
@@ -30,17 +31,10 @@ public class Block extends ASTNode implements StmtOpt {
         tokens.nextToken();
     }
 
-    public void checkError(SymbolTable table){
+    public void checkError(SymbolTable lastTable){
+        symbolTable = new SymbolTable(lastTable);
         for(BlockItem b : blockItems) {
-            b.checkError(table);
-        }
-    }
-
-    public boolean hasReturnAtEnd(){
-        if(blockItems.isEmpty()){
-            return false;
-        } else {
-            return blockItems.get(blockItems.size() - 1).isReturnStmt();
+            b.checkError(symbolTable);
         }
     }
     public String toString(){

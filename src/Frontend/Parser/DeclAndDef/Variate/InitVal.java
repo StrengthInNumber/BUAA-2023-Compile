@@ -1,6 +1,7 @@
 package Frontend.Parser.DeclAndDef.Variate;
 
 import Check.CompilerError;
+import Check.Symbol.SymbolTable;
 import Frontend.Lexer.Token.TokenType;
 import Frontend.Parser.ASTNode;
 import Frontend.Parser.DeclAndDef.Constant.ConstInitVal;
@@ -47,6 +48,18 @@ public class InitVal extends ASTNode {
         }
     }
 
+    public void checkError(SymbolTable table){
+        if(flag == 0){
+            exp.checkError(table);
+        } else {
+            if(initVal != null) {
+                initVal.checkError(table);
+                for (InitVal i : initVals) {
+                    i.checkError(table);
+                }
+            }
+        }
+    }
     public String toString() {
         StringBuilder sb = new StringBuilder();
         if(flag == 0){

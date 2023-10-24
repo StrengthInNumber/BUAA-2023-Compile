@@ -1,10 +1,15 @@
 package Frontend.Parser.DeclAndDef.Variate;
 
 import Check.CompilerError;
-import Check.ErrorType;
+import Check.Error.Error;
+import Check.Error.ErrorTable;
+import Check.Error.ErrorType;
+import Check.Symbol.SymbolConst;
+import Check.Symbol.SymbolTable;
+import Check.Symbol.SymbolVar;
+import Check.Symbol.ValueType;
 import Frontend.Lexer.Token.TokenType;
 import Frontend.Parser.ASTNode;
-import Frontend.Parser.DeclAndDef.Constant.ConstInitVal;
 import Frontend.Parser.Expression.ConstExp;
 import Frontend.Parser.Terminator.Ident;
 import Frontend.TokensReadControl;
@@ -18,6 +23,7 @@ public class VarDef extends ASTNode {
     private ArrayList<ConstExp> constExps;
     private InitVal initVal;
     private int flag; //0-no initVal; 1-have initVal
+    private int lineNum;
 
     public VarDef(TokensReadControl tokens){
         super(tokens);
@@ -27,6 +33,7 @@ public class VarDef extends ASTNode {
 
     public void parse() throws CompilerError {
         ident = new Ident(tokens.getNowToken());
+        lineNum = tokens.getNowTokenLineNum();
         tokens.nextToken();
         while(tokens.getNowTokenType() == TokenType.LBRACK){
             tokens.nextToken();
@@ -34,7 +41,8 @@ public class VarDef extends ASTNode {
             constExp.parse();
             constExps.add(constExp);
             if(tokens.getNowTokenType() != TokenType.RBRACK){
-                throw new CompilerError(ErrorType.MISS_RBRACK, tokens.getNowTokenLineNum());
+                //throw new CompilerError(ErrorType.MISS_RBRACK, tokens.getNowTokenLineNum());
+                ErrorTable.getInstance().addError(new Error(tokens.getNowTokenLineNum(), ErrorType.MISS_RBRACK));
             }else {
                 tokens.nextToken();
             }
@@ -47,6 +55,15 @@ public class VarDef extends ASTNode {
         }
     }
 
+    public void checkError(SymbolTable table, ValueType type){
+        table.addSymbol(new SymbolVar(lineNum, ident.getName(), constExps.size(), type), false);
+        for(ConstExp cd : constExps){
+            cd.checkError(table);
+        }
+        if(flag == 1){
+            initVal.checkError(table);
+        }
+    }
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(ident);

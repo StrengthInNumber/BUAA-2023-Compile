@@ -1,10 +1,12 @@
 package Frontend.Parser.Expression;
 
 import Check.CompilerError;
-import Check.ErrorType;
+import Check.Error.Error;
+import Check.Error.ErrorTable;
+import Check.Error.ErrorType;
+import Check.Symbol.SymbolTable;
 import Frontend.Lexer.Token.TokenType;
 import Frontend.Parser.ASTNode;
-import Frontend.Parser.DeclAndDef.Function.FuncFParams;
 import Frontend.Parser.Terminator.Ident;
 import Frontend.Parser.Terminator.UnaryOp;
 import Frontend.TokensReadControl;
@@ -20,6 +22,7 @@ public class UnaryExp extends ASTNode {
     private FuncRParams funcRParams;
     private UnaryOp unaryOp;
     private UnaryExp unaryExp;
+    private int lineNum;
 
     public UnaryExp(TokensReadControl tokens) {
         super(tokens);
@@ -36,8 +39,9 @@ public class UnaryExp extends ASTNode {
             tokens.nextToken();
             unaryExp = new UnaryExp(tokens);
             unaryExp.parse();
-        } else if (t2 == TokenType.LPARENT) {
+        } else if (t1 == TokenType.IDENFR && t2 == TokenType.LPARENT) {
             ident = new Ident(tokens.getNowToken());
+            lineNum = tokens.getNowTokenLineNum();
             flag = 1;
             tokens.nextToken();
             tokens.nextToken();
@@ -53,7 +57,8 @@ public class UnaryExp extends ASTNode {
                 funcRParams.parse();
             }
             if (tokens.getNowTokenType() != TokenType.RPARENT) {
-                throw new CompilerError(ErrorType.MISS_RPARENT, tokens.getNowTokenLineNum());
+                //throw new CompilerError(ErrorType.MISS_RPARENT, tokens.getNowTokenLineNum());
+                ErrorTable.getInstance().addError(new Error(tokens.getNowTokenLineNum(), ErrorType.MISS_RPARENT));
             } else {
                 tokens.nextToken();
             }
@@ -64,6 +69,40 @@ public class UnaryExp extends ASTNode {
         }
     }
 
+    public void checkError(SymbolTable table){
+        switch (flag) {
+            case 0:
+                primaryExp.checkError(table);
+                break;
+            case 1:
+                if(!table.haveSymbol(ident.getName(), true)){
+                    ErrorTable.getInstance().addError(new Error(lineNum, ErrorType.UNDEFINED_SYMBOL));
+                } else {
+                    if (funcRParams == null) {
+                        if(table.getFuncParamSize(ident.getName()) != 0) {
+                            ErrorTable.getInstance().addError(new Error(lineNum, ErrorType.PARAM_NUM_MISMATCH));
+                        }
+                    } else {
+                        funcRParams.checkError(table, ident.getName());
+                    }
+                }
+                break;
+            case 2:
+                unaryExp.checkError(table);
+                break;
+        }
+    }
+    public int getDim(SymbolTable table){
+        return switch (flag) {
+            case 0 -> primaryExp.getDim(table);
+            case 1 -> table.getFuncDim(ident.getName());
+            case 2 -> unaryExp.getDim(table);
+            default -> {
+                System.out.println("wrong in UnaryExp.getDim");
+                yield -1;
+            }
+        };
+    }
     public String toString() {
         StringBuilder sb = new StringBuilder();
         switch (flag) {

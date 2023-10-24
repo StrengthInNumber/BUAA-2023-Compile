@@ -11,6 +11,9 @@ public class Ident {
         assert token.getType() == TokenType.IDENFR;
     }
 
+    public String getName(){
+        return token.getContent();
+    }
     public String toString() {
         return token.toString();
     }

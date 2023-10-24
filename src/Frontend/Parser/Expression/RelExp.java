@@ -1,6 +1,7 @@
 package Frontend.Parser.Expression;
 
 import Check.CompilerError;
+import Check.Symbol.SymbolTable;
 import Frontend.Lexer.Token.Token;
 import Frontend.Lexer.Token.TokenType;
 import Frontend.Parser.ASTNode;
@@ -35,6 +36,12 @@ public class RelExp extends ASTNode {
             addExp = new AddExp(tokens);
             addExp.parse();
             addExps.add(addExp);
+        }
+    }
+
+    public void checkError(SymbolTable table){
+        for(AddExp e : addExps){
+            e.checkError(table);
         }
     }
 

@@ -1,6 +1,7 @@
 package Frontend.Parser.BlockAndStmt;
 
 import Check.CompilerError;
+import Check.Symbol.SymbolTable;
 import Frontend.Lexer.Token.TokenType;
 import Frontend.Parser.ASTNode;
 import Frontend.Parser.DeclAndDef.Decl;
@@ -30,6 +31,21 @@ public class BlockItem extends ASTNode {
         }
     }
 
+    public void checkError(SymbolTable table){
+        if(flag == 0){
+            decl.checkError(table);
+        } else {
+            stmt.checkError(table);
+        }
+    }
+
+    public boolean isReturnStmt(){
+        if(stmt == null){
+            return false;
+        } else {
+            return stmt.isReturnStmt();
+        }
+    }
     public String toString(){
         StringBuilder sb = new StringBuilder();
         if(flag == 0){

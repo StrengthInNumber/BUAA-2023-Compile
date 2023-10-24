@@ -41,4 +41,8 @@ public class TokensReadControl {
     public void setNowIndex(int nowIndex) {
         this.nowIndex = nowIndex;
     }
+
+    public int getLastTokenLineNum() {
+        return tokens.get(nowIndex - 1).getLineNum();
+    }
 }

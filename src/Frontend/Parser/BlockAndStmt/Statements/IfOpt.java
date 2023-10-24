@@ -1,7 +1,10 @@
 package Frontend.Parser.BlockAndStmt.Statements;
 
 import Check.CompilerError;
-import Check.ErrorType;
+import Check.Error.Error;
+import Check.Error.ErrorTable;
+import Check.Error.ErrorType;
+import Check.Symbol.SymbolTable;
 import Frontend.Lexer.Token.TokenType;
 import Frontend.Parser.ASTNode;
 import Frontend.Parser.BlockAndStmt.Stmt;
@@ -33,7 +36,8 @@ public class IfOpt extends ASTNode implements StmtOpt{
         tokens.nextToken();
         cond.parse();
         if(tokens.getNowTokenType() != TokenType.RPARENT){
-            throw new CompilerError(ErrorType.MISS_RPARENT, tokens.getNowTokenLineNum());
+            //throw new CompilerError(ErrorType.MISS_RPARENT, tokens.getNowTokenLineNum());
+            ErrorTable.getInstance().addError(new Error(tokens.getNowTokenLineNum(), ErrorType.MISS_RPARENT));
         } else {
             tokens.nextToken();
         }
@@ -43,6 +47,15 @@ public class IfOpt extends ASTNode implements StmtOpt{
             flag = 1;
             elseStmt = new Stmt(tokens);
             elseStmt.parse();
+        }
+    }
+
+    @Override
+    public void checkError(SymbolTable table) {
+        cond.checkError(table);
+        stmt.checkError(table);
+        if(flag == 1){
+            elseStmt.checkError(table);
         }
     }
 

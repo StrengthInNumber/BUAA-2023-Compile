@@ -1,7 +1,11 @@
 package Frontend.Parser.DeclAndDef.Constant;
 
 import Check.CompilerError;
-import Check.ErrorType;
+import Check.Error.Error;
+import Check.Error.ErrorTable;
+import Check.Error.ErrorType;
+import Check.Symbol.SymbolConst;
+import Check.Symbol.SymbolTable;
 import Frontend.Lexer.Token.Token;
 import Frontend.Lexer.Token.TokenType;
 import Frontend.Parser.ASTNode;
@@ -17,7 +21,6 @@ public class ConstDecl extends ASTNode {
     private BType bType;
     private final ConstDef constDef;
     private final ArrayList<ConstDef> constDefs;
-
     public ConstDecl(TokensReadControl tokens) {
         super(tokens);
         constDef = new ConstDef(tokens);
@@ -47,12 +50,19 @@ public class ConstDecl extends ASTNode {
             tt = tokens.getNowTokenType();
         }
         if (tt != TokenType.SEMICN) {
-            throw new CompilerError(ErrorType.MISS_SEMICOLON, tokens.getNowTokenLineNum());
+            //throw new CompilerError(ErrorType.MISS_SEMICOLON, tokens.getNowTokenLineNum());
+            ErrorTable.getInstance().addError(new Error(tokens.getLastTokenLineNum(), ErrorType.MISS_SEMICN));
         } else {
             tokens.nextToken();
         }
     }
 
+    public void checkError(SymbolTable table){
+        constDef.checkError(table, bType.getValueType());
+        for (ConstDef cd : constDefs) {
+            cd.checkError(table, bType.getValueType());
+        }
+    }
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(constTk);

@@ -1,6 +1,7 @@
 package Frontend.Parser.Expression;
 
 import Check.CompilerError;
+import Check.Symbol.SymbolTable;
 import Frontend.Lexer.Token.TokenType;
 import Frontend.Parser.ASTNode;
 import Frontend.TokensReadControl;
@@ -26,7 +27,11 @@ public class LAndExp extends ASTNode {
             eqExps.add(eqExp);
         }
     }
-
+    public void checkError(SymbolTable table){
+        for(EqExp e : eqExps){
+            e.checkError(table);
+        }
+    }
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(eqExps.get(0));

@@ -1,7 +1,12 @@
 package Frontend.Parser.DeclAndDef.Function;
 
 import Check.CompilerError;
-import Check.ErrorType;
+import Check.Error.Error;
+import Check.Error.ErrorTable;
+import Check.Error.ErrorType;
+import Check.Symbol.SymbolFunc;
+import Check.Symbol.SymbolTable;
+import Check.Symbol.ValueType;
 import Frontend.Lexer.Token.TokenType;
 import Frontend.Parser.ASTNode;
 import Frontend.Parser.BlockAndStmt.Block;
@@ -11,6 +16,9 @@ public class MainFuncDef extends ASTNode {
     //主函数定义 MainFuncDef → 'int' 'main' '(' ')' Block
     // 存在main函数
     private Block block;
+    private SymbolTable symbolTable;
+    private int identLineNum;
+    private int endLineNum;
     public MainFuncDef(TokensReadControl tokens){
         super(tokens);
     }
@@ -22,6 +30,7 @@ public class MainFuncDef extends ASTNode {
         if(tokens.getNowTokenType() != TokenType.MAINTK){
             printError();
         }
+        identLineNum = tokens.getNowTokenLineNum();
         tokens.nextToken();
         if(tokens.getNowTokenType() != TokenType.LPARENT){
             printError();
@@ -34,6 +43,17 @@ public class MainFuncDef extends ASTNode {
         }
         block = new Block(tokens);
         block.parse();
+        endLineNum = tokens.getLastTokenLineNum();
+    }
+
+    public void checkError(SymbolTable lastTable){
+        symbolTable = new SymbolTable(lastTable, ValueType.INT);
+        lastTable.addSymbol(new SymbolFunc(identLineNum, "main", ValueType.INT,
+                symbolTable.getFuncFParamType(), symbolTable.getFuncFParamDims()), false);
+        block.checkError(symbolTable);
+        if(!block.hasReturnAtEnd()){
+            ErrorTable.getInstance().addError(new Error(endLineNum, ErrorType.MISS_RETURN));
+        }
     }
 
     public String toString(){

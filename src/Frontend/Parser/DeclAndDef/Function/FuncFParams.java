@@ -1,6 +1,7 @@
 package Frontend.Parser.DeclAndDef.Function;
 
 import Check.CompilerError;
+import Check.Symbol.SymbolTable;
 import Frontend.Lexer.Token.TokenType;
 import Frontend.Parser.ASTNode;
 import Frontend.Parser.Expression.ConstExp;
@@ -26,6 +27,13 @@ public class FuncFParams extends ASTNode {
             FuncFParam f = new FuncFParam(tokens);
             f.parse();
             funcFParams.add(f);
+        }
+    }
+
+    public void checkError(SymbolTable table){
+        funcFParam.checkError(table);
+        for(FuncFParam f : funcFParams){
+            f.checkError(table);
         }
     }
     public String toString(){

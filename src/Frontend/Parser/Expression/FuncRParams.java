@@ -1,6 +1,10 @@
 package Frontend.Parser.Expression;
 
 import Check.CompilerError;
+import Check.Error.Error;
+import Check.Error.ErrorTable;
+import Check.Error.ErrorType;
+import Check.Symbol.SymbolTable;
 import Frontend.Lexer.Token.TokenType;
 import Frontend.Parser.ASTNode;
 import Frontend.Parser.DeclAndDef.Function.FuncFParam;
@@ -13,6 +17,7 @@ public class FuncRParams extends ASTNode {
     // 1.花括号内重复0次 2.花括号内重复多次 3.Exp需 要覆盖数组传参和部分数组传参
     private Exp exp;
     private ArrayList<Exp> exps;
+    private int lineNum;
 
     public FuncRParams(TokensReadControl tokens) {
         super(tokens);
@@ -22,6 +27,7 @@ public class FuncRParams extends ASTNode {
 
     public void parse() throws CompilerError {
         exp.parse();
+        lineNum = tokens.getNowTokenLineNum();
         while (tokens.getNowTokenType() == TokenType.COMMA) {
             tokens.nextToken();
             Exp e = new Exp(tokens);
@@ -30,6 +36,30 @@ public class FuncRParams extends ASTNode {
         }
     }
 
+    public void checkError(SymbolTable table, String name){
+        if(table.getFuncParamSize(name) != exps.size() + 1){
+            ErrorTable.getInstance().addError(new Error(lineNum, ErrorType.PARAM_NUM_MISMATCH));
+        } else {
+            ArrayList<Integer> dims = table.getFuncDims(name);
+            for(int i = 0; i < dims.size(); i++){
+                if(i == 0){
+                    if(dims.get(0) != exp.getDim(table)){
+                        ErrorTable.getInstance().addError(new Error(lineNum, ErrorType.PARAM_TYPE_MISMATCH));
+                        break;
+                    }
+                } else {
+                    if(dims.get(i) != exps.get(i - 1).getDim(table)){
+                        ErrorTable.getInstance().addError(new Error(lineNum, ErrorType.PARAM_TYPE_MISMATCH));
+                        break;
+                    }
+                }
+            }
+        }
+        exp.checkError(table);
+        for(Exp e : exps){
+            e.checkError(table);
+        }
+    }
     public String toString(){
         StringBuilder sb = new StringBuilder();
         sb.append(exp);

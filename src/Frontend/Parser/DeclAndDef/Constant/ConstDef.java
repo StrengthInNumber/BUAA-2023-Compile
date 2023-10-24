@@ -1,11 +1,16 @@
 package Frontend.Parser.DeclAndDef.Constant;
 
 import Check.CompilerError;
-import Check.ErrorType;
+import Check.Error.Error;
+import Check.Error.ErrorTable;
+import Check.Error.ErrorType;
+import Check.Symbol.SymbolConst;
+import Check.Symbol.SymbolTable;
+import Check.Symbol.ValueType;
 import Frontend.Lexer.Token.TokenType;
 import Frontend.Parser.ASTNode;
-import Frontend.Parser.Expression.AddExp;
 import Frontend.Parser.Expression.ConstExp;
+import Frontend.Parser.Terminator.BType;
 import Frontend.Parser.Terminator.Ident;
 import Frontend.TokensReadControl;
 
@@ -17,6 +22,7 @@ public class ConstDef extends ASTNode {
     private Ident ident;
     private ArrayList<ConstExp> constExps;
     private ConstInitVal constInitVal;
+    private int lineNum;
 
     public ConstDef(TokensReadControl tokens) {
         super(tokens);
@@ -25,6 +31,7 @@ public class ConstDef extends ASTNode {
 
     public void parse() throws CompilerError {
         ident = new Ident(tokens.getNowToken());
+        lineNum = tokens.getNowTokenLineNum();
         tokens.nextToken();
         while (tokens.getNowTokenType() == TokenType.LBRACK) {
             tokens.nextToken();
@@ -32,7 +39,8 @@ public class ConstDef extends ASTNode {
             constExp.parse();
             constExps.add(constExp);
             if (tokens.getNowTokenType() != TokenType.RBRACK) {
-                throw new CompilerError(ErrorType.MISS_RBRACK, tokens.getNowTokenLineNum());
+                //throw new CompilerError(ErrorType.MISS_RBRACK, tokens.getNowTokenLineNum());
+                ErrorTable.getInstance().addError(new Error(tokens.getNowTokenLineNum(), ErrorType.MISS_RBRACK));
             } else {
                 tokens.nextToken();
             }
@@ -45,6 +53,13 @@ public class ConstDef extends ASTNode {
         constInitVal.parse();
     }
 
+    public void checkError(SymbolTable table, ValueType type){
+        table.addSymbol(new SymbolConst(lineNum, ident.getName(), constExps.size(), type), false);
+        for(ConstExp ce : constExps){
+            ce.checkError(table);
+        }
+        constInitVal.checkError(table);
+    }
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(ident);

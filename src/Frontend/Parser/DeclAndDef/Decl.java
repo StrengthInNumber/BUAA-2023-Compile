@@ -1,6 +1,7 @@
 package Frontend.Parser.DeclAndDef;
 
 import Check.CompilerError;
+import Check.Symbol.SymbolTable;
 import Frontend.Lexer.Token.TokenType;
 import Frontend.Parser.ASTNode;
 import Frontend.Parser.DeclAndDef.Constant.ConstDecl;
@@ -28,6 +29,13 @@ public class Decl extends ASTNode {
             varDecl.parse();
         } else {
             printError();
+        }
+    }
+    public void checkError(SymbolTable table) {
+        if(flag == 0){
+            constDecl.checkError(table);
+        } else {
+            varDecl.checkError(table);
         }
     }
     public String toString() {

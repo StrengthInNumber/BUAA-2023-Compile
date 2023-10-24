@@ -1,7 +1,8 @@
 package Frontend.Parser.Expression;
 
 import Check.CompilerError;
-import Check.ErrorType;
+import Check.Error.ErrorType;
+import Check.Symbol.SymbolTable;
 import Frontend.Lexer.Token.TokenType;
 import Frontend.Parser.ASTNode;
 import Frontend.Parser.Terminator.Number;
@@ -22,7 +23,7 @@ public class PrimaryExp extends ASTNode {
 
     public void parse() throws CompilerError {
         switch (tokens.getNowTokenType()) {
-            case TokenType.LPARENT:
+            case LPARENT:
                 tokens.nextToken();
                 exp = new Exp(tokens);
                 flag = 0;
@@ -33,12 +34,12 @@ public class PrimaryExp extends ASTNode {
                     tokens.nextToken();
                 }
                 break;
-            case TokenType.IDENFR:
+            case IDENFR:
                 lVal = new LVal(tokens);
                 flag = 1;
                 lVal.parse();
                 break;
-            case TokenType.INTCON:
+            case INTCON:
                 number = new Number(tokens.getNowToken());
                 flag = 2;
                 tokens.nextToken();
@@ -48,6 +49,28 @@ public class PrimaryExp extends ASTNode {
         }
     }
 
+    public void checkError(SymbolTable table){
+        switch (flag){
+            case 0:
+                exp.checkError(table);
+                break;
+            case 1:
+                lVal.checkError(table);
+                break;
+        }
+    }
+
+    public int getDim(SymbolTable table){
+        return switch (flag) {
+            case 0 -> exp.getDim(table);
+            case 1 -> lVal.getDim(table);
+            case 2 -> 0;
+            default -> {
+                System.out.println("wrong in PrimaryExp.getDim");
+                yield -1;
+            }
+        };
+    }
     public String toString(){
         StringBuilder sb = new StringBuilder();
         switch (flag){

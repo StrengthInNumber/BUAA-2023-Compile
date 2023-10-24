@@ -1,7 +1,9 @@
 package Frontend.Lexer;
 
 import Check.CompilerError;
-import Check.ErrorType;
+import Check.Error.Error;
+import Check.Error.ErrorTable;
+import Check.Error.ErrorType;
 import Frontend.Lexer.Token.*;
 
 import java.util.ArrayList;
@@ -16,14 +18,15 @@ public class Lexer {
     private final HashMap<String, TokenType> reservedWords;
     private final HashMap<Character, TokenType> singleDelimiter;
 
-    public ArrayList<Token> getTokens(){
+    public ArrayList<Token> getTokens() {
         return tokens;
     }
+
     public Lexer(String source) {
         this.source = source;
         sourceLen = source.length();
         curPos = -1;
-        lineNum = 0;
+        lineNum = 1;
         tokens = new ArrayList<>();
 
         reservedWords = new HashMap<>();
@@ -154,11 +157,31 @@ public class Lexer {
             nowToken.append(getNowChar());
             curPos++;
             while (notReachEnd() && getNowChar() != '"') {
-                if (getNowChar() == '\n') {
-                    lineNum++;
+                if (isFSLegal(getNowChar())) {
+                    if (getNowChar() == 92) {
+                        curPos++;
+                        if (getNowChar() != 'n') {
+                            ErrorTable.getInstance().addError(new Error(lineNum, ErrorType.ILLEGAL_SYMBOL));
+                            continue;
+                        } else {
+                            curPos--;
+                        }
+                    }
+                    nowToken.append(getNowChar());
+                    curPos++;
+                } else if(getNowChar() == '%') {
+                    curPos++;
+                    if(getNowChar() == 'd'){
+                        curPos++;
+                        nowToken.append("%d");
+                    } else {
+                        ErrorTable.getInstance().addError(new Error(lineNum, ErrorType.ILLEGAL_SYMBOL));
+                    }
+                } else {
+                    ErrorTable.getInstance().addError(new Error(lineNum, ErrorType.ILLEGAL_SYMBOL));
+                    curPos++;
                 }
-                nowToken.append(getNowChar());
-                curPos++;
+
             }
             nowToken.append(getNowChar());
             nextChar();
@@ -166,7 +189,7 @@ public class Lexer {
         } else if (notReachEnd() && getNowChar() == '&') {
             nextChar();
             if (notReachEnd() && getNowChar() != '&') {
-                throw new CompilerError(ErrorType.LEX_ERROR, lineNum);
+                throw new CompilerError(ErrorType.ILLEGAL_SYMBOL, lineNum);
             } else {
                 tokens.add(new SimpleToken(TokenType.AND, lineNum, "&&"));
                 nextChar();
@@ -174,7 +197,7 @@ public class Lexer {
         } else if (notReachEnd() && getNowChar() == '|') {
             nextChar();
             if (notReachEnd() && getNowChar() != '|') {
-                throw new CompilerError(ErrorType.LEX_ERROR, lineNum);
+                throw new CompilerError(ErrorType.ILLEGAL_SYMBOL, lineNum);
             } else {
                 tokens.add(new SimpleToken(TokenType.OR, lineNum, "||"));
             }
@@ -222,7 +245,7 @@ public class Lexer {
         } else if (notReachEnd() && singleDelimiter.containsKey(getNowChar())) {
             tokens.add(new SimpleToken(singleDelimiter.get(getNowChar()), lineNum, String.valueOf(getNowChar())));
             nextChar();
-        } else if (notReachEnd() && getNowChar() == '\n'){
+        } else if (notReachEnd() && getNowChar() == '\n') {
             nextChar();
             lineNum++;
         } else if (notReachEnd()) {
@@ -230,9 +253,13 @@ public class Lexer {
         }
     }
 
-    public String toString(){
+    private boolean isFSLegal(char c) {
+        return c == 32 || c == 33 || (c >= 40 && c <= 126);
+    }
+
+    public String toString() {
         StringBuilder sb = new StringBuilder();
-        for(Token token: tokens){
+        for (Token token : tokens) {
             sb.append(token.toString());
         }
         return sb.toString();
