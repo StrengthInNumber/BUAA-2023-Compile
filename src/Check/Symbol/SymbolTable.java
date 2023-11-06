@@ -16,7 +16,7 @@ public class SymbolTable {
     private boolean inCircle; //当前是否在循环语句内
     private ArrayList<ValueType> funcFParamTypes = new ArrayList<>();
     private ArrayList<Integer> funcFParamDims = new ArrayList<>();
-    public SymbolTable(SymbolTable parent, int depth){
+    public SymbolTable(int depth){
         symbols = new HashMap<>();
         this.parent = null;
         this.depth = depth;

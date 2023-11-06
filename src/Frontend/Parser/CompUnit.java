@@ -22,7 +22,7 @@ public class CompUnit extends ASTNode {
         super(tokens);
         decls = new ArrayList<>();
         funcDefs = new ArrayList<>();
-        symbolTable = new SymbolTable(null, 0);
+        symbolTable = new SymbolTable(0);
     }
 
     public void parse() throws CompilerError {

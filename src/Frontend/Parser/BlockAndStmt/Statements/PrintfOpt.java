@@ -46,7 +46,7 @@ public class PrintfOpt extends ASTNode implements StmtOpt{
             exps.add(exp);
         }
         if(tokens.getNowTokenType() != TokenType.RPARENT){
-            ErrorTable.getInstance().addError(new Error(tokens.getNowTokenLineNum(), ErrorType.MISS_RPARENT));
+            ErrorTable.getInstance().addError(new Error(tokens.getLastTokenLineNum(), ErrorType.MISS_RPARENT));
         }
         tokens.nextToken();
         if (tokens.getNowTokenType() != TokenType.SEMICN) {

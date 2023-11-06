@@ -43,7 +43,7 @@ public class FuncFParam extends ASTNode {
             tokens.nextToken();
             if (tokens.getNowTokenType() != TokenType.RBRACK) {
                 //throw new CompilerError(ErrorType.MISS_RBRACK, tokens.getNowTokenLineNum());
-                ErrorTable.getInstance().addError(new Error(tokens.getNowTokenLineNum(), ErrorType.MISS_RBRACK));
+                ErrorTable.getInstance().addError(new Error(tokens.getLastTokenLineNum(), ErrorType.MISS_RBRACK));
             } else {
                 tokens.nextToken();
             }
@@ -55,7 +55,7 @@ public class FuncFParam extends ASTNode {
                 constExps.add(constExp);
                 if (tokens.getNowTokenType() != TokenType.RBRACK) {
                     //throw new CompilerError(ErrorType.MISS_RBRACK, tokens.getNowTokenLineNum());
-                    ErrorTable.getInstance().addError(new Error(tokens.getNowTokenLineNum(), ErrorType.MISS_RBRACK));
+                    ErrorTable.getInstance().addError(new Error(tokens.getLastTokenLineNum(), ErrorType.MISS_RBRACK));
                 } else {
                     tokens.nextToken();
                 }

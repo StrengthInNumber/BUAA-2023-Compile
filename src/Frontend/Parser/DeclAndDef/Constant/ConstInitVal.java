@@ -2,10 +2,8 @@ package Frontend.Parser.DeclAndDef.Constant;
 
 import Check.CompilerError;
 import Check.Symbol.SymbolTable;
-import Frontend.Lexer.Token.Token;
 import Frontend.Lexer.Token.TokenType;
 import Frontend.Parser.ASTNode;
-import Frontend.Parser.Expression.AddExp;
 import Frontend.Parser.Expression.ConstExp;
 import Frontend.TokensReadControl;
 

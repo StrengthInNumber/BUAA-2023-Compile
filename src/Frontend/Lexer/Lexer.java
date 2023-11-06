@@ -169,9 +169,9 @@ public class Lexer {
                     }
                     nowToken.append(getNowChar());
                     curPos++;
-                } else if(getNowChar() == '%') {
+                } else if (getNowChar() == '%') {
                     curPos++;
-                    if(getNowChar() == 'd'){
+                    if (getNowChar() == 'd') {
                         curPos++;
                         nowToken.append("%d");
                     } else {

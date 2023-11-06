@@ -24,7 +24,7 @@ public class ContinueOpt extends ASTNode implements StmtOpt {
             printError();
         }
         continueTK = tokens.getNowToken();
-        lineNum = tokens.getNowTokenLineNum();;
+        lineNum = tokens.getNowTokenLineNum();
         tokens.nextToken();
         if (tokens.getNowTokenType() != TokenType.SEMICN) {
             //throw new CompilerError(ErrorType.MISS_SEMICN, tokens.getNowTokenLineNum());

@@ -1,8 +1,8 @@
 package Check.Symbol;
 
 public class Symbol {
-    private int lineNum; //from 1
-    private String name;
+    private final int lineNum; //from 1
+    private final String name;
     private SymbolType type;
     public Symbol(int lineNum, String name, SymbolType type){
         this.lineNum = lineNum;

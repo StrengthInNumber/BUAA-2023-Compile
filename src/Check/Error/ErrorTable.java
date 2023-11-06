@@ -4,7 +4,7 @@ import java.util.TreeSet;
 
 public class ErrorTable {
     private static final ErrorTable ERROR_TABLE = new ErrorTable();
-    private TreeSet<Error> errors = new TreeSet<>();
+    private final TreeSet<Error> errors = new TreeSet<>();
 
     public static ErrorTable getInstance() {
         return ERROR_TABLE;

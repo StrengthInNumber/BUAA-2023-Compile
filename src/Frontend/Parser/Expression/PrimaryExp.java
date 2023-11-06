@@ -1,6 +1,8 @@
 package Frontend.Parser.Expression;
 
 import Check.CompilerError;
+import Check.Error.Error;
+import Check.Error.ErrorTable;
 import Check.Error.ErrorType;
 import Check.Symbol.SymbolTable;
 import Frontend.Lexer.Token.TokenType;
@@ -29,7 +31,8 @@ public class PrimaryExp extends ASTNode {
                 flag = 0;
                 exp.parse();
                 if (tokens.getNowTokenType() != TokenType.RPARENT) {
-                    throw new CompilerError(ErrorType.MISS_RPARENT, tokens.getNowTokenLineNum());
+                    //throw new CompilerError(ErrorType.MISS_RPARENT, tokens.getNowTokenLineNum());
+                    ErrorTable.getInstance().addError(new Error(tokens.getLastTokenLineNum(), ErrorType.MISS_RPARENT));
                 } else {
                     tokens.nextToken();
                 }

@@ -46,7 +46,7 @@ public class FuncDef extends ASTNode {
         }
         if(tokens.getNowTokenType() != TokenType.RPARENT){
             //throw new CompilerError(ErrorType.MISS_RPARENT, tokens.getNowTokenLineNum());
-            ErrorTable.getInstance().addError(new Error(tokens.getNowTokenLineNum(), ErrorType.MISS_RPARENT));
+            ErrorTable.getInstance().addError(new Error(tokens.getLastTokenLineNum(), ErrorType.MISS_RPARENT));
         } else {
             tokens.nextToken();
         }

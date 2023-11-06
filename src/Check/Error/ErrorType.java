@@ -17,7 +17,7 @@ public enum ErrorType
     NON_LOOP_STMT('m');     // m 在非循环块中使用 break 和 continue 语句
 
 
-    private char typeCode;
+    private final char typeCode;
     ErrorType(char typeCode){
         this.typeCode = typeCode;
     }

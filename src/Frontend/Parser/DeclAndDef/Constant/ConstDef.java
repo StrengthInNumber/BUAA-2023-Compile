@@ -10,7 +10,6 @@ import Check.Symbol.ValueType;
 import Frontend.Lexer.Token.TokenType;
 import Frontend.Parser.ASTNode;
 import Frontend.Parser.Expression.ConstExp;
-import Frontend.Parser.Terminator.BType;
 import Frontend.Parser.Terminator.Ident;
 import Frontend.TokensReadControl;
 
@@ -40,7 +39,7 @@ public class ConstDef extends ASTNode {
             constExps.add(constExp);
             if (tokens.getNowTokenType() != TokenType.RBRACK) {
                 //throw new CompilerError(ErrorType.MISS_RBRACK, tokens.getNowTokenLineNum());
-                ErrorTable.getInstance().addError(new Error(tokens.getNowTokenLineNum(), ErrorType.MISS_RBRACK));
+                ErrorTable.getInstance().addError(new Error(tokens.getLastTokenLineNum(), ErrorType.MISS_RBRACK));
             } else {
                 tokens.nextToken();
             }

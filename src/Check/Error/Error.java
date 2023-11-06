@@ -1,8 +1,8 @@
 package Check.Error;
 
 public class Error implements Comparable<Error>{
-    private ErrorType type;
-    private int lineNum;
+    private final ErrorType type;
+    private final int lineNum;
 
     public Error(int lineNum, ErrorType type){
         this.lineNum = lineNum;
@@ -16,10 +16,9 @@ public class Error implements Comparable<Error>{
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(lineNum);
-        sb.append(' ');
-        sb.append(type.getCode());
-        return sb.toString();
+        String sb = String.valueOf(lineNum) +
+                ' ' +
+                type.getCode();
+        return sb;
     }
 }

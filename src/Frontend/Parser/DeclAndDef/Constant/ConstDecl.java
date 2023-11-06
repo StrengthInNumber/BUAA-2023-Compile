@@ -4,7 +4,6 @@ import Check.CompilerError;
 import Check.Error.Error;
 import Check.Error.ErrorTable;
 import Check.Error.ErrorType;
-import Check.Symbol.SymbolConst;
 import Check.Symbol.SymbolTable;
 import Frontend.Lexer.Token.Token;
 import Frontend.Lexer.Token.TokenType;

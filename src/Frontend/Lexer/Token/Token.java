@@ -1,9 +1,9 @@
 package Frontend.Lexer.Token;
 
 public class Token {
-    private TokenType type;
-    private int lineNum;
-    private String content;
+    private final TokenType type;
+    private final int lineNum;
+    private final String content;
 
     public Token(TokenType type, int lineNum, String content){
         this.type = type;
