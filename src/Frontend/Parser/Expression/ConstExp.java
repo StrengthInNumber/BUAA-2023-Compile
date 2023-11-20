@@ -1,7 +1,7 @@
 package Frontend.Parser.Expression;
 
-import Check.CompilerError;
-import Check.Symbol.SymbolTable;
+import Middle.CompilerError;
+import Middle.Symbol.SymbolTable;
 import Frontend.Parser.ASTNode;
 import Frontend.TokensReadControl;
 
@@ -19,6 +19,9 @@ public class ConstExp extends ASTNode {
         addExp.checkError(table);
     }
 
+    public int getConstValue(SymbolTable table){
+        return addExp.getConstValue(table);
+    }
     public String toString(){
         return addExp.toString() + "<ConstExp>\n";
     }

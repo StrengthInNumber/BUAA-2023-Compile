@@ -1,10 +1,12 @@
 package Frontend.Parser.DeclAndDef.Variate;
 
-import Check.CompilerError;
-import Check.Error.Error;
-import Check.Error.ErrorTable;
-import Check.Error.ErrorType;
-import Check.Symbol.SymbolTable;
+import Frontend.Parser.DeclAndDef.Constant.ConstDef;
+import Middle.CompilerError;
+import Middle.Error.Error;
+import Middle.Error.ErrorTable;
+import Middle.Error.ErrorType;
+import Middle.LLVMIR.GlobalVar.IRGlobalVar;
+import Middle.Symbol.SymbolTable;
 import Frontend.Lexer.Token.TokenType;
 import Frontend.Parser.ASTNode;
 import Frontend.Parser.Terminator.BType;
@@ -41,6 +43,19 @@ public class VarDecl extends ASTNode {
         }
     }
 
+    public void generateIRGlobal(SymbolTable table){
+        varDef.generateIRGlobal(table, bType.getValueType());
+        for (VarDef cd : varDefs) {
+            cd.generateIRGlobal(table, bType.getValueType());
+        }
+    }
+
+    public void generateIRLocal(SymbolTable table){
+        varDef.generateIRLocal(table, bType.getValueType());
+        for (VarDef cd : varDefs) {
+            cd.generateIRLocal(table, bType.getValueType());
+        }
+    }
     public void checkError(SymbolTable table){
         varDef.checkError(table, bType.getValueType());
         for(VarDef vd : varDefs){

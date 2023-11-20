@@ -1,7 +1,7 @@
 package Frontend.Parser.BlockAndStmt;
 
-import Check.CompilerError;
-import Check.Symbol.SymbolTable;
+import Middle.CompilerError;
+import Middle.Symbol.SymbolTable;
 import Frontend.Lexer.Token.TokenType;
 import Frontend.Parser.ASTNode;
 import Frontend.Parser.BlockAndStmt.Statements.*;
@@ -59,6 +59,10 @@ public class Stmt extends ASTNode {
     }
     public void checkError(SymbolTable table){
         stmtOpt.checkError(table);
+    }
+
+    public void generateIR(SymbolTable table) {
+        stmtOpt.generateIR(table);
     }
 
     public boolean isReturnStmt(){

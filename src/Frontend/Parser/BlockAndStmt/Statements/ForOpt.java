@@ -1,8 +1,11 @@
 package Frontend.Parser.BlockAndStmt.Statements;
 
-import Check.CompilerError;
-import Check.Error.ErrorType;
-import Check.Symbol.SymbolTable;
+import Middle.CompilerError;
+import Middle.Error.ErrorType;
+import Middle.LLVMIR.BasicBlock.IRBasicBlock;
+import Middle.LLVMIR.IRBuilder;
+import Middle.LLVMIR.Instruction.IRInstrJump;
+import Middle.Symbol.SymbolTable;
 import Frontend.Lexer.Token.TokenType;
 import Frontend.Parser.ASTNode;
 import Frontend.Parser.BlockAndStmt.Stmt;
@@ -78,6 +81,34 @@ public class ForOpt extends ASTNode implements StmtOpt{
         table.setInCircle(true);
         stmt.checkError(table);
         table.setInCircle(false);
+    }
+
+    public void generateIR(SymbolTable table) {
+        if(forStmt1 != null) {
+            forStmt1.generateIR(table);
+        }
+        IRBasicBlock condBB = new IRBasicBlock(IRBuilder.getInstance().getBasicBlockName(), true);
+        IRBasicBlock stmtBB = new IRBasicBlock(IRBuilder.getInstance().getBasicBlockName(), true);
+        IRBasicBlock forStmt2BB = new IRBasicBlock(IRBuilder.getInstance().getBasicBlockName(), true);
+        IRBasicBlock afterForBB = new IRBasicBlock(IRBuilder.getInstance().getBasicBlockName(), true);
+        IRBuilder.getInstance().enterLoop(forStmt2BB, afterForBB);
+        new IRInstrJump(condBB, true);
+        IRBuilder.getInstance().setCurBasicBlock(condBB);
+        if(cond != null) {
+            cond.generateIR(table, stmtBB, afterForBB);
+        } else {
+            new IRInstrJump(stmtBB, true);
+        }
+        IRBuilder.getInstance().setCurBasicBlock(stmtBB);
+        stmt.generateIR(table);
+        new IRInstrJump(forStmt2BB, true);
+        IRBuilder.getInstance().setCurBasicBlock(forStmt2BB);
+        if(forStmt2 != null) {
+            forStmt2.generateIR(table);
+        }
+        new IRInstrJump(condBB, true);
+        IRBuilder.getInstance().leaveLoop();
+        IRBuilder.getInstance().setCurBasicBlock(afterForBB);
     }
 
     public String toString(){

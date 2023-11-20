@@ -1,7 +1,7 @@
 package Frontend.Parser.BlockAndStmt.Statements;
 
-import Check.CompilerError;
-import Check.Symbol.SymbolTable;
+import Middle.CompilerError;
+import Middle.Symbol.SymbolTable;
 import Frontend.Lexer.Token.TokenType;
 import Frontend.Parser.ASTNode;
 import Frontend.Parser.BlockAndStmt.BlockItem;
@@ -13,7 +13,8 @@ public class BlockOpt extends ASTNode implements StmtOpt {
     //语句块 Block → '{' { BlockItem } '}'
     // 1.花括号内重复0次 2.花括号内重复多次
     private ArrayList<BlockItem> blockItems;
-    private SymbolTable symbolTable;
+    private SymbolTable symbolTable_error;
+    private SymbolTable symbolTable_ir;
     public BlockOpt(TokensReadControl tokens){
         super(tokens);
         blockItems = new ArrayList<>();
@@ -32,9 +33,16 @@ public class BlockOpt extends ASTNode implements StmtOpt {
     }
 
     public void checkError(SymbolTable lastTable){
-        symbolTable = new SymbolTable(lastTable);
+        symbolTable_error = new SymbolTable(lastTable);
         for(BlockItem b : blockItems) {
-            b.checkError(symbolTable);
+            b.checkError(symbolTable_error);
+        }
+    }
+
+    public void generateIR(SymbolTable lastTable) {
+        symbolTable_ir = new SymbolTable(lastTable);
+        for(BlockItem b : blockItems) {
+            b.generateIR(symbolTable_ir);
         }
     }
     public String toString(){

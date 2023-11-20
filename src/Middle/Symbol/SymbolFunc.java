@@ -1,4 +1,4 @@
-package Check.Symbol;
+package Middle.Symbol;
 
 import java.util.ArrayList;
 

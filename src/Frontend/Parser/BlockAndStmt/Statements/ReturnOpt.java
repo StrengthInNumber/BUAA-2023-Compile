@@ -1,10 +1,12 @@
 package Frontend.Parser.BlockAndStmt.Statements;
 
-import Check.CompilerError;
-import Check.Error.Error;
-import Check.Error.ErrorTable;
-import Check.Error.ErrorType;
-import Check.Symbol.SymbolTable;
+import Middle.CompilerError;
+import Middle.Error.Error;
+import Middle.Error.ErrorTable;
+import Middle.Error.ErrorType;
+import Middle.LLVMIR.IRValue;
+import Middle.LLVMIR.Instruction.FunctionInstr.IRInstrRet;
+import Middle.Symbol.SymbolTable;
 import Frontend.Lexer.Token.TokenType;
 import Frontend.Parser.ASTNode;
 import Frontend.Parser.Expression.Exp;
@@ -56,6 +58,14 @@ public class ReturnOpt extends ASTNode implements StmtOpt {
         if (exp != null) {
             exp.checkError(table);
         }
+    }
+
+    public void generateIR(SymbolTable table) {
+        IRValue returnValue = null;
+        if(exp != null) {
+            returnValue = exp.generateIR(table);
+        }
+        new IRInstrRet(returnValue, true);
     }
     public String toString(){
         StringBuilder sb = new StringBuilder();

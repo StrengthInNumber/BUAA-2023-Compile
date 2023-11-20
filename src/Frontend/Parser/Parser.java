@@ -1,6 +1,6 @@
 package Frontend.Parser;
 
-import Check.CompilerError;
+import Middle.CompilerError;
 import Frontend.TokensReadControl;
 
 public class Parser {
@@ -13,6 +13,10 @@ public class Parser {
 
     public void parse() throws CompilerError {
         compUnit.parse();
+    }
+
+    public CompUnit getCompUnit() {
+        return compUnit;
     }
 
     public void checkError(){

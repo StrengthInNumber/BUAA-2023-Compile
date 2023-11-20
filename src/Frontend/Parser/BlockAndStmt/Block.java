@@ -1,7 +1,7 @@
 package Frontend.Parser.BlockAndStmt;
 
-import Check.CompilerError;
-import Check.Symbol.SymbolTable;
+import Middle.CompilerError;
+import Middle.Symbol.SymbolTable;
 import Frontend.Lexer.Token.TokenType;
 import Frontend.Parser.ASTNode;
 import Frontend.Parser.BlockAndStmt.Statements.StmtOpt;
@@ -41,6 +41,12 @@ public class Block extends ASTNode implements StmtOpt {
             return false;
         } else {
             return blockItems.get(blockItems.size() - 1).isReturnStmt();
+        }
+    }
+
+    public void generateIR(SymbolTable table) {
+        for(BlockItem b : blockItems) {
+            b.generateIR(table);
         }
     }
     public String toString(){

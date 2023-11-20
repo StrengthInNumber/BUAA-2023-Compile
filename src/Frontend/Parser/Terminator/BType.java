@@ -1,6 +1,6 @@
 package Frontend.Parser.Terminator;
 
-import Check.Symbol.ValueType;
+import Middle.Symbol.ValueType;
 import Frontend.Lexer.Token.Token;
 import Frontend.Lexer.Token.TokenType;
 

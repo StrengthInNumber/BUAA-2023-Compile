@@ -1,10 +1,12 @@
 package Frontend.Parser.BlockAndStmt.Statements;
 
-import Check.CompilerError;
-import Check.Error.Error;
-import Check.Error.ErrorTable;
-import Check.Error.ErrorType;
-import Check.Symbol.SymbolTable;
+import Middle.CompilerError;
+import Middle.Error.Error;
+import Middle.Error.ErrorTable;
+import Middle.Error.ErrorType;
+import Middle.LLVMIR.Instruction.IOInstr.IRInstrPutCh;
+import Middle.LLVMIR.Instruction.IOInstr.IRInstrPutInt;
+import Middle.Symbol.SymbolTable;
 import Frontend.Lexer.Token.Token;
 import Frontend.Lexer.Token.TokenType;
 import Frontend.Parser.ASTNode;
@@ -68,6 +70,20 @@ public class PrintfOpt extends ASTNode implements StmtOpt{
         }
         if(count != exps.size()){
             ErrorTable.getInstance().addError(new Error(lineNum, ErrorType.FORM_STRING_MISMATCH));
+        }
+    }
+
+    public void generateIR(SymbolTable table) {
+        String fs = formatString.getContent();
+        int expNum = 0;
+        for(int i = 0; i < fs.length(); i++) {
+            if(fs.charAt(i) == '%') {
+                new IRInstrPutInt(exps.get(expNum).generateIR(table), true);
+                i++;
+                expNum++;
+            } else if (fs.charAt(i) != '\"') {
+                new IRInstrPutCh(fs.charAt(i),true);
+            }
         }
     }
 

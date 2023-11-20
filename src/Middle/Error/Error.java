@@ -1,4 +1,4 @@
-package Check.Error;
+package Middle.Error;
 
 public class Error implements Comparable<Error>{
     private final ErrorType type;

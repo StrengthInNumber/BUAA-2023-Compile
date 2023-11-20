@@ -1,6 +1,6 @@
-package Check;
+package Middle;
 
-import Check.Error.ErrorType;
+import Middle.Error.ErrorType;
 
 public class CompilerError extends Exception{
     public CompilerError(ErrorType type, int lineNum){

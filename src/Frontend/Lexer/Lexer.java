@@ -1,9 +1,9 @@
 package Frontend.Lexer;
 
-import Check.CompilerError;
-import Check.Error.Error;
-import Check.Error.ErrorTable;
-import Check.Error.ErrorType;
+import Middle.CompilerError;
+import Middle.Error.Error;
+import Middle.Error.ErrorTable;
+import Middle.Error.ErrorType;
 import Frontend.Lexer.Token.*;
 
 import java.util.ArrayList;

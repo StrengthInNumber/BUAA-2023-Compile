@@ -1,11 +1,11 @@
 package Frontend.Parser.DeclAndDef.Variate;
 
-import Check.CompilerError;
-import Check.Symbol.SymbolTable;
+import Frontend.Parser.DeclAndDef.Constant.ConstInitVal;
+import Middle.CompilerError;
+import Middle.LLVMIR.IRValue;
+import Middle.Symbol.SymbolTable;
 import Frontend.Lexer.Token.TokenType;
 import Frontend.Parser.ASTNode;
-import Frontend.Parser.DeclAndDef.Constant.ConstInitVal;
-import Frontend.Parser.Expression.ConstExp;
 import Frontend.Parser.Expression.Exp;
 import Frontend.TokensReadControl;
 
@@ -59,6 +59,52 @@ public class InitVal extends ASTNode {
                 }
             }
         }
+    }
+    public int getConstValue_0(SymbolTable table){
+        if(flag == 0){
+            return exp.getConstValue(table);
+        } else {
+            System.out.println("wrong in ConstInitVal.getConstValue_0");
+            return -9999;
+        }
+    }
+
+    public ArrayList<Integer> getConstValue_1(SymbolTable table){
+        ArrayList<Integer> ans = new ArrayList<>();
+        ans.add(initVal.getConstValue_0(table));
+        for(InitVal c : initVals){
+            ans.add(c.getConstValue_0(table));
+        }
+        return ans;
+    }
+
+    public ArrayList<ArrayList<Integer>> getConstValue_2(SymbolTable table){
+        ArrayList<ArrayList<Integer>> ans = new ArrayList<>();
+        ans.add(initVal.getConstValue_1(table));
+        for(InitVal c : initVals){
+            ans.add(c.getConstValue_1(table));
+        }
+        return ans;
+    }
+
+    public IRValue getInitValue_0(SymbolTable table) {
+        return exp.generateIR(table);
+    }
+
+    public ArrayList<IRValue> getInitValue_1(SymbolTable table) {
+        ArrayList<IRValue> values = new ArrayList<>();
+        for(InitVal i : initVals) {
+            values.add(i.getInitValue_0(table));
+        }
+        return values;
+    }
+
+    public ArrayList<IRValue> getInitValue_2(SymbolTable table) {
+        ArrayList<IRValue> values = new ArrayList<>();
+        for(InitVal i : initVals) {
+            values.addAll(i.getInitValue_1(table));
+        }
+        return values;
     }
     public String toString() {
         StringBuilder sb = new StringBuilder();

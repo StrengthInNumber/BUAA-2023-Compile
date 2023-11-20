@@ -1,7 +1,7 @@
 package Frontend.Parser.DeclAndDef.Constant;
 
-import Check.CompilerError;
-import Check.Symbol.SymbolTable;
+import Middle.CompilerError;
+import Middle.Symbol.SymbolTable;
 import Frontend.Lexer.Token.TokenType;
 import Frontend.Parser.ASTNode;
 import Frontend.Parser.Expression.ConstExp;
@@ -59,6 +59,33 @@ public class ConstInitVal extends ASTNode {
                 }
             }
         }
+    }
+
+    public int getConstValue_0(SymbolTable table){
+        if(flag == 0){
+            return constExp.getConstValue(table);
+        } else {
+            System.out.println("wrong in ConstInitVal.getConstValue_0");
+            return -9999;
+        }
+    }
+
+    public ArrayList<Integer> getConstValue_1(SymbolTable table){
+        ArrayList<Integer> ans = new ArrayList<>();
+        ans.add(constInitVal.getConstValue_0(table));
+        for(ConstInitVal c : constInitVals){
+            ans.add(c.getConstValue_0(table));
+        }
+        return ans;
+    }
+
+    public ArrayList<ArrayList<Integer>> getConstValue_2(SymbolTable table){
+        ArrayList<ArrayList<Integer>> ans = new ArrayList<>();
+        ans.add(constInitVal.getConstValue_1(table));
+        for(ConstInitVal c : constInitVals){
+            ans.add(c.getConstValue_1(table));
+        }
+        return ans;
     }
     public String toString() {
         StringBuilder sb = new StringBuilder();

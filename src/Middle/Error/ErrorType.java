@@ -1,4 +1,4 @@
-package Check.Error;
+package Middle.Error;
 
 public enum ErrorType
 {

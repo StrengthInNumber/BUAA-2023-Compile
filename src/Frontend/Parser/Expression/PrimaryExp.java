@@ -1,10 +1,11 @@
 package Frontend.Parser.Expression;
 
-import Check.CompilerError;
-import Check.Error.Error;
-import Check.Error.ErrorTable;
-import Check.Error.ErrorType;
-import Check.Symbol.SymbolTable;
+import Middle.CompilerError;
+import Middle.Error.Error;
+import Middle.Error.ErrorTable;
+import Middle.Error.ErrorType;
+import Middle.LLVMIR.IRValue;
+import Middle.Symbol.SymbolTable;
 import Frontend.Lexer.Token.TokenType;
 import Frontend.Parser.ASTNode;
 import Frontend.Parser.Terminator.Number;
@@ -71,6 +72,30 @@ public class PrimaryExp extends ASTNode {
             default -> {
                 System.out.println("wrong in PrimaryExp.getDim");
                 yield -1;
+            }
+        };
+    }
+
+    public int getConstValue(SymbolTable table) {
+        return switch (flag) {
+            case 0 -> exp.getConstValue(table);
+            case 1 -> lVal.getConstValue(table);
+            case 2 -> number.getConstValue();
+            default -> {
+                System.out.println("wrong in PrimaryExp.getDim");
+                yield -1;
+            }
+        };
+    }
+
+    public IRValue generateIR(SymbolTable table) {
+        return switch (flag) {
+            case 0 -> exp.generateIR(table);
+            case 1 -> lVal.generateIRForValue(table);
+            case 2 -> number.generateIR();
+            default -> {
+                System.out.println("wrong in PrimaryExp.generateIR");
+                yield null;
             }
         };
     }

@@ -1,8 +1,9 @@
 package Frontend.Parser;
 
-import Check.CompilerError;
-import Check.Symbol.SymbolTable;
-import Frontend.Lexer.Token.Token;
+import Middle.CompilerError;
+import Middle.LLVMIR.IRBuilder;
+import Middle.LLVMIR.IRModule;
+import Middle.Symbol.SymbolTable;
 import Frontend.Lexer.Token.TokenType;
 import Frontend.Parser.DeclAndDef.Decl;
 import Frontend.Parser.DeclAndDef.Function.FuncDef;
@@ -16,13 +17,27 @@ public class CompUnit extends ASTNode {
     private ArrayList<Decl> decls;
     private ArrayList<FuncDef> funcDefs;
     private MainFuncDef mainFuncDef;
-    private SymbolTable symbolTable;
+    private SymbolTable symbolTable_error;
+    private SymbolTable symbolTable_ir;
 
     public CompUnit(TokensReadControl tokens) {
         super(tokens);
         decls = new ArrayList<>();
         funcDefs = new ArrayList<>();
-        symbolTable = new SymbolTable(0);
+        symbolTable_error = new SymbolTable(0);
+        symbolTable_ir = new SymbolTable(0);
+    }
+
+    public ArrayList<Decl> getDecls() {
+        return decls;
+    }
+
+    public ArrayList<FuncDef> getFuncDefs() {
+        return funcDefs;
+    }
+
+    public MainFuncDef getMainFuncDef() {
+        return mainFuncDef;
     }
 
     public void parse() throws CompilerError {
@@ -50,14 +65,25 @@ public class CompUnit extends ASTNode {
 
     public void checkError(){
         for(Decl decl: decls){
-            decl.checkError(symbolTable);
+            decl.checkError(symbolTable_error);
         }
         for(FuncDef funcDef: funcDefs){
-            funcDef.checkError(symbolTable);
+            funcDef.checkError(symbolTable_error);
         }
-        mainFuncDef.checkError(symbolTable);
+        mainFuncDef.checkError(symbolTable_error);
     }
 
+    public void generateIR() {
+        IRModule irModule = new IRModule();
+        IRBuilder.getInstance().setCurModule(irModule);
+        for(Decl decl: decls){
+            decl.generateIRGlobal(symbolTable_ir);
+        }
+        for(FuncDef funcDef: funcDefs){
+            funcDef.generateIR(symbolTable_ir);
+        }
+        mainFuncDef.generateIR(symbolTable_ir);
+    }
     public String toString(){
         StringBuilder sb = new StringBuilder();
         for(Decl decl: decls){
@@ -71,3 +97,4 @@ public class CompUnit extends ASTNode {
         return sb.toString();
     }
 }
+

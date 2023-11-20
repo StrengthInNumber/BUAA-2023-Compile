@@ -1,10 +1,11 @@
 package Frontend.Parser.DeclAndDef.Function;
 
-import Check.CompilerError;
-import Check.Symbol.SymbolTable;
+import Middle.CompilerError;
+import Middle.LLVMIR.BasicBlock.IRBasicBlock;
+import Middle.LLVMIR.Function.IRParam;
+import Middle.Symbol.SymbolTable;
 import Frontend.Lexer.Token.TokenType;
 import Frontend.Parser.ASTNode;
-import Frontend.Parser.Expression.ConstExp;
 import Frontend.TokensReadControl;
 
 import java.util.ArrayList;
@@ -35,6 +36,15 @@ public class FuncFParams extends ASTNode {
         for(FuncFParam f : funcFParams){
             f.checkError(table);
         }
+    }
+
+    public ArrayList<IRParam> generateIR(SymbolTable table, IRBasicBlock bb) {
+        ArrayList<IRParam> ans = new ArrayList<>();
+        ans.add(funcFParam.generateIR(table, bb));
+        for(FuncFParam f : funcFParams){
+            ans.add(f.generateIR(table, bb));
+        }
+        return ans;
     }
     public String toString(){
         StringBuilder sb = new StringBuilder();

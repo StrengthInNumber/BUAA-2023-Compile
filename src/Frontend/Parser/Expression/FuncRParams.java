@@ -1,20 +1,20 @@
 package Frontend.Parser.Expression;
 
-import Check.CompilerError;
-import Check.Error.Error;
-import Check.Error.ErrorTable;
-import Check.Error.ErrorType;
-import Check.Symbol.SymbolTable;
+import Middle.CompilerError;
+import Middle.Error.Error;
+import Middle.Error.ErrorTable;
+import Middle.Error.ErrorType;
+import Middle.LLVMIR.IRValue;
+import Middle.Symbol.SymbolTable;
 import Frontend.Lexer.Token.TokenType;
 import Frontend.Parser.ASTNode;
-import Frontend.Parser.DeclAndDef.Function.FuncFParam;
 import Frontend.TokensReadControl;
 
 import java.util.ArrayList;
 
 public class FuncRParams extends ASTNode {
     //函数实参表 FuncRParams → Exp { ',' Exp }
-    // 1.花括号内重复0次 2.花括号内重复多次 3.Exp需 要覆盖数组传参和部分数组传参
+    // 1.花括号内重复0次 2.花括号内重复多次 3.Exp需要覆盖数组传参和部分数组传参
     private Exp exp;
     private ArrayList<Exp> exps;
     private int lineNum;
@@ -59,6 +59,15 @@ public class FuncRParams extends ASTNode {
         for(Exp e : exps){
             e.checkError(table);
         }
+    }
+
+    public ArrayList<IRValue> generateIR(SymbolTable table) {
+        ArrayList<IRValue> ans = new ArrayList<>();
+        ans.add(exp.generateIR(table));
+        for(Exp e : exps) {
+            ans.add(e.generateIR(table));
+        }
+        return ans;
     }
     public String toString(){
         StringBuilder sb = new StringBuilder();

@@ -1,10 +1,14 @@
 package Frontend.Parser.BlockAndStmt.Statements;
 
-import Check.CompilerError;
-import Check.Error.Error;
-import Check.Error.ErrorTable;
-import Check.Error.ErrorType;
-import Check.Symbol.SymbolTable;
+import Middle.CompilerError;
+import Middle.Error.Error;
+import Middle.Error.ErrorTable;
+import Middle.Error.ErrorType;
+import Middle.LLVMIR.IRBuilder;
+import Middle.LLVMIR.IRValue;
+import Middle.LLVMIR.Instruction.IOInstr.IRInstrGetint;
+import Middle.LLVMIR.Instruction.MemoryInstr.IRInstrStore;
+import Middle.Symbol.SymbolTable;
 import Frontend.Lexer.Token.TokenType;
 import Frontend.Parser.ASTNode;
 import Frontend.Parser.Expression.LVal;
@@ -66,6 +70,16 @@ public class LValEqOpt extends ASTNode implements StmtOpt {
         }
     }
 
+    public void generateIR(SymbolTable table) {
+        IRValue lv = lVal.generateIRForAssign(table);
+        if(flag == 0) {
+            IRValue ex = exp.generateIR(table);
+            new IRInstrStore(ex, lv, true);
+        } else { //getint
+            IRValue getint = new IRInstrGetint(IRBuilder.getInstance().getLocalVarName());
+            new IRInstrStore(getint, lv, true);
+        }
+    }
     public String toString(){
         StringBuilder sb = new StringBuilder();
         sb.append(lVal);

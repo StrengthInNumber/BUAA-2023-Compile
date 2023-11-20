@@ -1,12 +1,15 @@
 package Frontend.Parser.DeclAndDef;
 
-import Check.CompilerError;
-import Check.Symbol.SymbolTable;
+import Middle.CompilerError;
+import Middle.LLVMIR.GlobalVar.IRGlobalVar;
+import Middle.Symbol.SymbolTable;
 import Frontend.Lexer.Token.TokenType;
 import Frontend.Parser.ASTNode;
 import Frontend.Parser.DeclAndDef.Constant.ConstDecl;
 import Frontend.Parser.DeclAndDef.Variate.VarDecl;
 import Frontend.TokensReadControl;
+
+import java.util.ArrayList;
 
 public class Decl extends ASTNode {
     //声明 Decl → ConstDecl | VarDecl // 覆盖两种声明
@@ -36,6 +39,22 @@ public class Decl extends ASTNode {
             constDecl.checkError(table);
         } else {
             varDecl.checkError(table);
+        }
+    }
+
+    public void generateIRGlobal(SymbolTable table){
+        if(flag == 0){
+            constDecl.generateIRGlobal(table);
+        } else {
+            varDecl.generateIRGlobal(table);
+        }
+    }
+
+    public void generateIRLocal(SymbolTable table){
+        if(flag == 0){
+            constDecl.generateIRLocal(table);
+        } else {
+            varDecl.generateIRLocal(table);
         }
     }
     public String toString() {

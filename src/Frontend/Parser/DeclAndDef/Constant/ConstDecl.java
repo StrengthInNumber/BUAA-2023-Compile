@@ -1,10 +1,10 @@
 package Frontend.Parser.DeclAndDef.Constant;
 
-import Check.CompilerError;
-import Check.Error.Error;
-import Check.Error.ErrorTable;
-import Check.Error.ErrorType;
-import Check.Symbol.SymbolTable;
+import Middle.CompilerError;
+import Middle.Error.Error;
+import Middle.Error.ErrorTable;
+import Middle.Error.ErrorType;
+import Middle.Symbol.SymbolTable;
 import Frontend.Lexer.Token.Token;
 import Frontend.Lexer.Token.TokenType;
 import Frontend.Parser.ASTNode;
@@ -60,6 +60,19 @@ public class ConstDecl extends ASTNode {
         constDef.checkError(table, bType.getValueType());
         for (ConstDef cd : constDefs) {
             cd.checkError(table, bType.getValueType());
+        }
+    }
+    public void generateIRGlobal(SymbolTable table){
+        constDef.generateIRGlobal(table, bType.getValueType());
+        for (ConstDef cd : constDefs) {
+            cd.generateIRGlobal(table, bType.getValueType());
+        }
+    }
+
+    public void generateIRLocal(SymbolTable table){
+        constDef.generateIRLocal(table, bType.getValueType());
+        for (ConstDef cd : constDefs) {
+            cd.generateIRLocal(table, bType.getValueType());
         }
     }
     public String toString() {

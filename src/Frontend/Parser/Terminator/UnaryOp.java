@@ -13,6 +13,13 @@ public class UnaryOp {
         option = token;
     }
 
+    public boolean isPlus() {
+        return option.getType() == TokenType.PLUS;
+    }
+
+    public boolean isMinus() {
+        return option.getType() == TokenType.MINU;
+    }
     public String toString() {
         return option.toString() + "<UnaryOp>\n";
     }

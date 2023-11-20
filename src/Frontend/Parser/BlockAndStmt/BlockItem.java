@@ -1,7 +1,7 @@
 package Frontend.Parser.BlockAndStmt;
 
-import Check.CompilerError;
-import Check.Symbol.SymbolTable;
+import Middle.CompilerError;
+import Middle.Symbol.SymbolTable;
 import Frontend.Lexer.Token.TokenType;
 import Frontend.Parser.ASTNode;
 import Frontend.Parser.DeclAndDef.Decl;
@@ -36,6 +36,14 @@ public class BlockItem extends ASTNode {
             decl.checkError(table);
         } else {
             stmt.checkError(table);
+        }
+    }
+
+    public void generateIR(SymbolTable table){
+        if(flag == 0){
+            decl.generateIRLocal(table);
+        } else {
+            stmt.generateIR(table);
         }
     }
 

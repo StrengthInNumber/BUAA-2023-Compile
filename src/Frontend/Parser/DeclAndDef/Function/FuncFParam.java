@@ -1,12 +1,19 @@
 package Frontend.Parser.DeclAndDef.Function;
 
-import Check.CompilerError;
-import Check.Error.Error;
-import Check.Error.ErrorTable;
-import Check.Error.ErrorType;
-import Check.Symbol.SymbolConst;
-import Check.Symbol.SymbolTable;
-import Check.Symbol.SymbolVar;
+import Middle.CompilerError;
+import Middle.Error.Error;
+import Middle.Error.ErrorTable;
+import Middle.Error.ErrorType;
+import Middle.LLVMIR.BasicBlock.IRBasicBlock;
+import Middle.LLVMIR.Function.IRParam;
+import Middle.LLVMIR.IRBuilder;
+import Middle.LLVMIR.Instruction.MemoryInstr.IRInstrAlloca;
+import Middle.LLVMIR.Instruction.MemoryInstr.IRInstrStore;
+import Middle.LLVMIR.Type.IRIntegerType;
+import Middle.LLVMIR.Type.IRPointerType;
+import Middle.LLVMIR.Type.IRType;
+import Middle.Symbol.SymbolTable;
+import Middle.Symbol.SymbolVar;
 import Frontend.Lexer.Token.TokenType;
 import Frontend.Parser.ASTNode;
 import Frontend.Parser.Expression.ConstExp;
@@ -73,6 +80,37 @@ public class FuncFParam extends ASTNode {
         table.addSymbol(new SymbolVar(lineNum, ident.getName(), dim, bType.getValueType()), true);
     }
 
+    public IRParam generateIR(SymbolTable table, IRBasicBlock bb) {
+        IRType type;
+        IRParam param;
+        SymbolVar sv;
+        int dim;
+        ArrayList<Integer> lengths = new ArrayList<>();
+        lengths.add(0);
+        for(ConstExp ce : constExps) {
+            lengths.add(ce.getConstValue(table));
+        }
+        if(flag == 0){
+            dim = 0;
+        } else {
+            dim = constExps.size() + 1;
+        }
+        if(flag == 0) {
+            type = IRIntegerType.INT32;
+            IRInstrAlloca ia = new IRInstrAlloca(IRBuilder.getInstance().getLocalVarName(), type, true);
+            param = new IRParam(IRBuilder.getInstance().getFParamName(), type);
+            new IRInstrStore(param, ia, true);
+            sv = new SymbolVar(lineNum, ident.getName(), dim, bType.getValueType(), lengths);
+            sv.setIRValue(ia);
+        } else {
+            type = new IRPointerType(IRIntegerType.INT32);
+            param = new IRParam(IRBuilder.getInstance().getFParamName(), type);
+            sv = new SymbolVar(lineNum, ident.getName(), dim, bType.getValueType(), lengths);
+            sv.setIRValue(param);
+        }
+        table.addSymbol(sv, true);
+        return param;
+    }
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(bType);

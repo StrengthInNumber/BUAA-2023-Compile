@@ -1,16 +1,25 @@
 package Frontend.Parser.Expression;
 
-import Check.CompilerError;
-import Check.Error.Error;
-import Check.Error.ErrorTable;
-import Check.Error.ErrorType;
-import Check.Symbol.SymbolTable;
+import Middle.CompilerError;
+import Middle.Error.Error;
+import Middle.Error.ErrorTable;
+import Middle.Error.ErrorType;
+import Middle.LLVMIR.Constant.IRConstInt;
+import Middle.LLVMIR.Function.IRFunction;
+import Middle.LLVMIR.IRBuilder;
+import Middle.LLVMIR.IRValue;
+import Middle.LLVMIR.Instruction.*;
+import Middle.LLVMIR.Instruction.FunctionInstr.IRInstrCall;
+import Middle.LLVMIR.Type.IRIntegerType;
+import Middle.Symbol.SymbolFunc;
+import Middle.Symbol.SymbolTable;
 import Frontend.Lexer.Token.TokenType;
 import Frontend.Parser.ASTNode;
 import Frontend.Parser.Terminator.Ident;
 import Frontend.Parser.Terminator.UnaryOp;
 import Frontend.TokensReadControl;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 public class UnaryExp extends ASTNode {
@@ -102,6 +111,63 @@ public class UnaryExp extends ASTNode {
                 yield -1;
             }
         };
+    }
+
+    public IRValue generateIR(SymbolTable table) {
+        IRValue v0 = new IRConstInt(IRIntegerType.INT32, 0);
+        switch (flag) {
+            case 0:
+                return primaryExp.generateIR(table);
+            case 1:
+                SymbolFunc sf = (SymbolFunc) table.getSymbol(ident.getName());
+                IRFunction irF = (IRFunction) sf.getIRValue();
+                if(funcRParams == null) {
+                    ArrayList<IRValue> emp = new ArrayList<>();
+                    return new IRInstrCall(IRBuilder.getInstance().getLocalVarName(), irF,
+                            emp, true);
+                } else {
+                    return new IRInstrCall(IRBuilder.getInstance().getLocalVarName(), irF,
+                            funcRParams.generateIR(table), true);
+                }
+            case 2:
+                IRValue vu = unaryExp.generateIR(table);
+                if (unaryOp.isPlus()) {
+                    return vu;
+                } else if (unaryOp.isMinus()) {
+                    return new IRInstrAlu(IRBuilder.getInstance().getLocalVarName(),
+                            IRInstrType.SUB, true, v0, vu);
+                } else { // !
+                    IRInstr instr = new IRInstrIcmp(IRBuilder.getInstance().getLocalVarName(),
+                            IRInstrType.EQ, true, v0, vu);
+                    return new IRInstrZext(IRBuilder.getInstance().getLocalVarName(), true,
+                            instr, IRIntegerType.INT32);
+                }
+            default:
+                System.out.println("wrong in UnaryExp.generateIR");
+                return null;
+        }
+    }
+    public int getConstValue(SymbolTable table){
+        switch (flag) {
+            case 0:
+                return primaryExp.getConstValue(table);
+            case 1:
+                System.out.println("wrong in UnaryExp.getConstValue: get a function");
+                return -9999;
+            case 2:
+                int ans = unaryExp.getConstValue(table);
+                if(unaryOp.isPlus()) {
+                    return ans;
+                } else if (unaryOp.isMinus()){
+                    return -ans;
+                } else {
+                    System.out.println("wrong in UnaryExp.getConstValue: get a \"!\" unaryOP");
+                    return -9999;
+                }
+            default:
+                System.out.println("wrong in UnaryExp.getConstValue");
+                return -9999;
+        }
     }
     public String toString() {
         StringBuilder sb = new StringBuilder();

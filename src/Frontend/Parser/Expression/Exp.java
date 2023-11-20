@@ -1,7 +1,8 @@
 package Frontend.Parser.Expression;
 
-import Check.CompilerError;
-import Check.Symbol.SymbolTable;
+import Middle.CompilerError;
+import Middle.LLVMIR.IRValue;
+import Middle.Symbol.SymbolTable;
 import Frontend.Parser.ASTNode;
 import Frontend.TokensReadControl;
 
@@ -21,6 +22,12 @@ public class Exp extends ASTNode {
     }
     public int getDim(SymbolTable table){
         return addExp.getDim(table);
+    }
+    public int getConstValue(SymbolTable table){
+        return addExp.getConstValue(table);
+    }
+    public IRValue generateIR(SymbolTable table) {
+        return addExp.generateIR(table);
     }
     public String toString(){
         return addExp.toString() + "<Exp>\n";

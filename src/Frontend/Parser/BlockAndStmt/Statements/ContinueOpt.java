@@ -1,10 +1,12 @@
 package Frontend.Parser.BlockAndStmt.Statements;
 
-import Check.CompilerError;
-import Check.Error.Error;
-import Check.Error.ErrorTable;
-import Check.Error.ErrorType;
-import Check.Symbol.SymbolTable;
+import Middle.CompilerError;
+import Middle.Error.Error;
+import Middle.Error.ErrorTable;
+import Middle.Error.ErrorType;
+import Middle.LLVMIR.IRBuilder;
+import Middle.LLVMIR.Instruction.IRInstrJump;
+import Middle.Symbol.SymbolTable;
 import Frontend.Lexer.Token.Token;
 import Frontend.Lexer.Token.TokenType;
 import Frontend.Parser.ASTNode;
@@ -38,6 +40,10 @@ public class ContinueOpt extends ASTNode implements StmtOpt {
         if (!table.isInCircle()) {
             ErrorTable.getInstance().addError(new Error(lineNum, ErrorType.NON_LOOP_STMT));
         }
+    }
+
+    public void generateIR(SymbolTable table) {
+        new IRInstrJump(IRBuilder.getInstance().getCurCircle_forStmt2BB(), true);
     }
 
     public String toString() {

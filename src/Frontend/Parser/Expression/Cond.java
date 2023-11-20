@@ -1,7 +1,8 @@
 package Frontend.Parser.Expression;
 
-import Check.CompilerError;
-import Check.Symbol.SymbolTable;
+import Middle.CompilerError;
+import Middle.LLVMIR.BasicBlock.IRBasicBlock;
+import Middle.Symbol.SymbolTable;
 import Frontend.Parser.ASTNode;
 import Frontend.TokensReadControl;
 
@@ -17,6 +18,9 @@ public class Cond extends ASTNode {
         lOrExp.parse();
     }
 
+    public void generateIR(SymbolTable table, IRBasicBlock trueBB, IRBasicBlock falseBB) {
+        lOrExp.generateIR(table, trueBB, falseBB);
+    }
     public void checkError(SymbolTable table){
         lOrExp.checkError(table);
     }

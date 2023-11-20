@@ -1,4 +1,4 @@
-package Check.Error;
+package Middle.Error;
 
 import java.util.TreeSet;
 

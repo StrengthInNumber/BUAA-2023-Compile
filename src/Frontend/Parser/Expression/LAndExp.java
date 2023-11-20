@@ -1,7 +1,10 @@
 package Frontend.Parser.Expression;
 
-import Check.CompilerError;
-import Check.Symbol.SymbolTable;
+import Middle.CompilerError;
+import Middle.LLVMIR.BasicBlock.IRBasicBlock;
+import Middle.LLVMIR.IRBuilder;
+import Middle.LLVMIR.Instruction.IRInstrBranch;
+import Middle.Symbol.SymbolTable;
 import Frontend.Lexer.Token.TokenType;
 import Frontend.Parser.ASTNode;
 import Frontend.TokensReadControl;
@@ -16,6 +19,14 @@ public class LAndExp extends ASTNode {
         eqExps = new ArrayList<>();
     }
 
+    public void generateIR(SymbolTable table, IRBasicBlock trueBB, IRBasicBlock falseBB) {
+        for (int i = 0; i < eqExps.size() - 1; i++) {
+            IRBasicBlock nextBB = new IRBasicBlock(IRBuilder.getInstance().getBasicBlockName(), true);
+            new IRInstrBranch(eqExps.get(i).generateIR(table), nextBB, falseBB, true);
+            IRBuilder.getInstance().setCurBasicBlock(nextBB);
+        }
+        new IRInstrBranch(eqExps.get(eqExps.size() - 1).generateIR(table), trueBB, falseBB, true);
+    }
     public void parse() throws CompilerError {
         EqExp eqExp = new EqExp(tokens);
         eqExp.parse();

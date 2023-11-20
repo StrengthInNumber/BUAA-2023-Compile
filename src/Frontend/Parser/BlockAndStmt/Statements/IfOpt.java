@@ -1,10 +1,13 @@
 package Frontend.Parser.BlockAndStmt.Statements;
 
-import Check.CompilerError;
-import Check.Error.Error;
-import Check.Error.ErrorTable;
-import Check.Error.ErrorType;
-import Check.Symbol.SymbolTable;
+import Middle.CompilerError;
+import Middle.Error.Error;
+import Middle.Error.ErrorTable;
+import Middle.Error.ErrorType;
+import Middle.LLVMIR.BasicBlock.IRBasicBlock;
+import Middle.LLVMIR.IRBuilder;
+import Middle.LLVMIR.Instruction.IRInstrJump;
+import Middle.Symbol.SymbolTable;
 import Frontend.Lexer.Token.TokenType;
 import Frontend.Parser.ASTNode;
 import Frontend.Parser.BlockAndStmt.Stmt;
@@ -59,6 +62,27 @@ public class IfOpt extends ASTNode implements StmtOpt{
         }
     }
 
+    public void generateIR(SymbolTable table) {
+        IRBasicBlock stmtBB = new IRBasicBlock(IRBuilder.getInstance().getBasicBlockName(), true);
+        IRBasicBlock afterIfBB = new IRBasicBlock(IRBuilder.getInstance().getBasicBlockName(), true);
+        if(flag == 0) { //no else
+            cond.generateIR(table, stmtBB, afterIfBB);
+            IRBuilder.getInstance().setCurBasicBlock(stmtBB);
+            stmt.generateIR(table);
+            new IRInstrJump(afterIfBB, true);
+            IRBuilder.getInstance().setCurBasicBlock(afterIfBB);
+        } else { //have else
+            IRBasicBlock elseStmtBB = new IRBasicBlock(IRBuilder.getInstance().getBasicBlockName(), true);
+            cond.generateIR(table, stmtBB, elseStmtBB);
+            IRBuilder.getInstance().setCurBasicBlock(stmtBB);
+            stmt.generateIR(table);
+            new IRInstrJump(afterIfBB, true);
+            IRBuilder.getInstance().setCurBasicBlock(elseStmtBB);
+            elseStmt.generateIR(table);
+            new IRInstrJump(afterIfBB, true);
+            IRBuilder.getInstance().setCurBasicBlock(afterIfBB);
+        }
+    }
     public String toString(){
         StringBuilder sb = new StringBuilder();
         sb.append("IFTK if\n");

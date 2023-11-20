@@ -1,10 +1,12 @@
 package Frontend.Parser.Expression;
 
-import Check.CompilerError;
-import Check.Error.Error;
-import Check.Error.ErrorTable;
-import Check.Error.ErrorType;
-import Check.Symbol.SymbolTable;
+import Middle.CompilerError;
+import Middle.Error.Error;
+import Middle.Error.ErrorTable;
+import Middle.Error.ErrorType;
+import Middle.LLVMIR.IRValue;
+import Middle.LLVMIR.Instruction.MemoryInstr.IRInstrStore;
+import Middle.Symbol.SymbolTable;
 import Frontend.Lexer.Token.TokenType;
 import Frontend.Parser.ASTNode;
 import Frontend.TokensReadControl;
@@ -36,6 +38,12 @@ public class ForStmt extends ASTNode {
         }
         lVal.checkError(table);
         exp.checkError(table);
+    }
+
+    public void generateIR(SymbolTable table) {
+        IRValue lv = lVal.generateIRForAssign(table);
+        IRValue ex = exp.generateIR(table);
+        new IRInstrStore(ex, lv, true);
     }
 
     public String toString() {

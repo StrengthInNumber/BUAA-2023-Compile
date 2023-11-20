@@ -1,10 +1,12 @@
 package Frontend.Parser.BlockAndStmt.Statements;
 
-import Check.CompilerError;
-import Check.Error.Error;
-import Check.Error.ErrorTable;
-import Check.Error.ErrorType;
-import Check.Symbol.SymbolTable;
+import Middle.CompilerError;
+import Middle.Error.Error;
+import Middle.Error.ErrorTable;
+import Middle.Error.ErrorType;
+import Middle.LLVMIR.IRBuilder;
+import Middle.LLVMIR.Instruction.IRInstrJump;
+import Middle.Symbol.SymbolTable;
 import Frontend.Lexer.Token.Token;
 import Frontend.Lexer.Token.TokenType;
 import Frontend.Parser.ASTNode;
@@ -34,6 +36,9 @@ public class BreakOpt extends ASTNode implements StmtOpt {
         }
     }
 
+    public void generateIR(SymbolTable table) {
+        new IRInstrJump(IRBuilder.getInstance().getCurCircle_afterForBB(), true);
+    }
     @Override
     public void checkError(SymbolTable table) {
         if(!table.isInCircle()){
