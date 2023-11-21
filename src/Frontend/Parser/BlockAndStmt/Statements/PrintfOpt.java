@@ -82,7 +82,12 @@ public class PrintfOpt extends ASTNode implements StmtOpt{
                 i++;
                 expNum++;
             } else if (fs.charAt(i) != '\"') {
-                new IRInstrPutCh(fs.charAt(i),true);
+                if(fs.charAt(i) == '\\' && fs.charAt(i + 1) == 'n') {
+                    new IRInstrPutCh('\n', true);
+                    i++;
+                } else {
+                    new IRInstrPutCh(fs.charAt(i), true);
+                }
             }
         }
     }

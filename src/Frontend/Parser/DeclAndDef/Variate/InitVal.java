@@ -93,6 +93,7 @@ public class InitVal extends ASTNode {
 
     public ArrayList<IRValue> getInitValue_1(SymbolTable table) {
         ArrayList<IRValue> values = new ArrayList<>();
+        values.add(initVal.getInitValue_0(table));
         for(InitVal i : initVals) {
             values.add(i.getInitValue_0(table));
         }
@@ -100,7 +101,7 @@ public class InitVal extends ASTNode {
     }
 
     public ArrayList<IRValue> getInitValue_2(SymbolTable table) {
-        ArrayList<IRValue> values = new ArrayList<>();
+        ArrayList<IRValue> values = new ArrayList<>(initVal.getInitValue_1(table));
         for(InitVal i : initVals) {
             values.addAll(i.getInitValue_1(table));
         }
