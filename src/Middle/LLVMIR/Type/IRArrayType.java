@@ -16,4 +16,8 @@ public class IRArrayType extends IRType {
         sb.append('[').append(eleNum).append(" x ").append(eleType).append(']');
         return sb.toString();
     }
+
+    public int getEleNum() {
+        return eleNum;
+    }
 }

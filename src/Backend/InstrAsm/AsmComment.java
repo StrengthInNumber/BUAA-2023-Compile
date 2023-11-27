@@ -1,15 +1,13 @@
 package Backend.InstrAsm;
 
-public class AsmInstrComment extends AsmInstr {
+public class AsmComment extends AsmInstr {
     private String content;
-
-    public AsmInstrComment(AsmInstrOp op, String content) {
-        super(op, 2);
+    public AsmComment(String content) {
+        super(AsmInstrOp.COMMENT, 2);
         this.content = content;
     }
 
     public String toString() {
         return '#' + content;
     }
-
 }

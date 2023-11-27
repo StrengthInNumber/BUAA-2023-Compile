@@ -36,4 +36,7 @@ public class IRInstr extends IRUser {
     public IRBasicBlock getParentBB() {
         return parentBB;
     }
+
+    public void generateAsm() {
+    }
 }

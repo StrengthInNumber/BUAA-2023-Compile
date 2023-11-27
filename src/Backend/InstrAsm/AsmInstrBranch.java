@@ -8,7 +8,7 @@ public class AsmInstrBranch extends AsmInstr{
     private String label;
 
     public AsmInstrBranch(AsmInstrOp op, Register rs, Register rt, String label) {
-        super(op);
+        super(op,2);
         this.rs = rs;
         this.rt = rt;
         this.label = label;

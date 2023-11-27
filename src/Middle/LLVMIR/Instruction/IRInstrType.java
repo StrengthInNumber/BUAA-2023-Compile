@@ -37,25 +37,4 @@ public enum IRInstrType {
     GETINT,
     PUTINT,
     PUTCH,
-
-
-
-    Not, // ! ONLY ONE PARAM
-    Beq, // IrBeq branch if ==
-    Bne, // IrBne branch if !=
-    Blt, // IrBlt branch if less than <
-    Ble, // IrBle branch if less or equal <=
-    Bgt, // IrBgt branch if greater than >
-    Bge, // IrBge branch if greater or equal >=
-    Goto, // IrGoto
-
-    //终结指令
-    Br,
-    Call,
-    Ret,
-    /* mem op */
-    Zext,
-    Phi,//用于 mem2reg
-
-    Label,
 }

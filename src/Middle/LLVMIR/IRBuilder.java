@@ -19,10 +19,10 @@ public class IRBuilder {
     private int fParamCount = 0;
     private int basicBlockCount = 0;
     private int localVarCount = 0;
+    private int irStringCount = 0;
     public static IRBuilder getInstance() {
         return IR_BUILDER;
     }
-
     private IRModule curModule;
     private IRFunction curFunction;
     private IRBasicBlock curBasicBlock;
@@ -52,6 +52,12 @@ public class IRBuilder {
         return "%Local_" + r;
     }
 
+    public String getIRStringName() {
+        int r = irStringCount;
+        irStringCount++;
+        return "str" + r;
+    }
+
     public String getFunctionName(String name) {
         return "@f_" + name;
     }
@@ -79,6 +85,10 @@ public class IRBuilder {
 
     public void addFunction(IRFunction f) {
         curModule.addFunction(f);
+    }
+
+    public void addIRString(IRString s) {
+        curModule.addIRString(s);
     }
 
     public void addBasicBlock(IRBasicBlock bb) {

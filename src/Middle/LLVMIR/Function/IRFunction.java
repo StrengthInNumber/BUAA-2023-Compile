@@ -1,5 +1,7 @@
 package Middle.LLVMIR.Function;
 
+import Backend.AsmBuilder;
+import Backend.InstrAsm.AsmInstrLabel;
 import Middle.LLVMIR.BasicBlock.IRBasicBlock;
 import Middle.LLVMIR.Constant.IRConstInt;
 import Middle.LLVMIR.IRBuilder;
@@ -62,5 +64,16 @@ public class IRFunction extends IRValue {
         }
         sb.append("}\n\n");
         return sb.toString();
+    }
+
+    public void generateAsm() {
+        new AsmInstrLabel(name.substring(1));
+        AsmBuilder.getInstance().prepareForFunc();
+        for(IRParam param : params) {
+            AsmBuilder.getInstance().pushToStack(param, 4);
+        }
+        for(IRBasicBlock bb : blocks) {
+            bb.generateAsm();
+        }
     }
 }

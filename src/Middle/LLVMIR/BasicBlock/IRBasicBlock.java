@@ -1,5 +1,6 @@
 package Middle.LLVMIR.BasicBlock;
 
+import Backend.InstrAsm.AsmInstrLabel;
 import Middle.LLVMIR.Function.IRFunction;
 import Middle.LLVMIR.IRBuilder;
 import Middle.LLVMIR.IRValue;
@@ -45,5 +46,12 @@ public class IRBasicBlock extends IRValue {
             sb.append(i).append('\n');
         }
         return sb.toString();
+    }
+
+    public void generateAsm() {
+        new AsmInstrLabel(name);
+        for(IRInstr i : instructions) {
+            i.generateAsm();
+        }
     }
 }

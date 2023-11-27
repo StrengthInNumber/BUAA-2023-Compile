@@ -7,14 +7,14 @@ public class AsmInstrJump extends AsmInstr {
     private Register rd;
 
     public AsmInstrJump(AsmInstrOp op, String target) {
-        super(op);
+        super(op, 2);
         this.target = target;
         this.rd = null;
     }
 
 
     public AsmInstrJump(AsmInstrOp op, Register rd) {
-        super(op);
+        super(op, 2);
         this.target = null;
         this.rd = rd;
     }

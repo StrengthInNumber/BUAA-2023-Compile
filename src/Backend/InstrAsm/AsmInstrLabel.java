@@ -1,15 +1,15 @@
 package Backend.InstrAsm;
 
 public class AsmInstrLabel extends AsmInstr{
-    private String label;
+    private String labelName;
 
-    public AsmInstrLabel(AsmInstrOp op, String label) {
-        super(op);
-        this.label = label;
+    public AsmInstrLabel(String labelName) {
+        super(AsmInstrOp.LABEL, 2);
+        this.labelName = labelName;
     }
 
     @Override
     public String toString() {
-        return label + ":";
+        return labelName + ":";
     }
 }

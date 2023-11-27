@@ -4,6 +4,8 @@ import Middle.CompilerError;
 import Middle.Error.Error;
 import Middle.Error.ErrorTable;
 import Middle.Error.ErrorType;
+import Middle.LLVMIR.IRBuilder;
+import Middle.LLVMIR.IRString;
 import Middle.LLVMIR.Instruction.IOInstr.IRInstrPutCh;
 import Middle.LLVMIR.Instruction.IOInstr.IRInstrPutInt;
 import Middle.Symbol.SymbolTable;
@@ -76,17 +78,22 @@ public class PrintfOpt extends ASTNode implements StmtOpt{
     public void generateIR(SymbolTable table) {
         String fs = formatString.getContent();
         int expNum = 0;
+        IRString irString = new IRString(IRBuilder.getInstance().getIRStringName());
         for(int i = 0; i < fs.length(); i++) {
             if(fs.charAt(i) == '%') {
                 new IRInstrPutInt(exps.get(expNum).generateIR(table), true);
                 i++;
                 expNum++;
+                irString = new IRString(IRBuilder.getInstance().getIRStringName());
             } else if (fs.charAt(i) != '\"') {
                 if(fs.charAt(i) == '\\' && fs.charAt(i + 1) == 'n') {
-                    new IRInstrPutCh('\n', true);
+                    irString.addChar(fs.charAt(i));
+                    irString.addChar(fs.charAt(i + 1));
+                    new IRInstrPutCh('\n', true, irString);
                     i++;
                 } else {
-                    new IRInstrPutCh(fs.charAt(i), true);
+                    irString.addChar(fs.charAt(i));
+                    new IRInstrPutCh(fs.charAt(i), true, irString);
                 }
             }
         }

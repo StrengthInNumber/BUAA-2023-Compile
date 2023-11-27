@@ -1,6 +1,9 @@
 package Middle.LLVMIR.GlobalVar;
 
+import Backend.InstrAsm.AsmInstrWord;
 import Middle.LLVMIR.Constant.IRConst;
+import Middle.LLVMIR.Constant.IRConstArray;
+import Middle.LLVMIR.Constant.IRConstInt;
 import Middle.LLVMIR.IRBuilder;
 import Middle.LLVMIR.IRUser;
 import Middle.LLVMIR.Type.IRPointerType;
@@ -34,5 +37,13 @@ public class IRGlobalVar extends IRUser {
             sb.append(init.toString()).append('\n');
         }
         return sb.toString();
+    }
+
+    public void generateAsm() {
+        if(init instanceof IRConstInt) {
+            new AsmInstrWord(name.substring(1), ((IRConstInt) init).getVal());
+        } else {
+            new AsmInstrWord(name.substring(1), ((IRConstArray) init).getVal());
+        }
     }
 }

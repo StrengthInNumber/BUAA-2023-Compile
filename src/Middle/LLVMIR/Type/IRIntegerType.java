@@ -22,4 +22,8 @@ public class IRIntegerType extends IRType {
             return "fuck";
         }
     }
+
+    public int getEleNum(){
+        return 1;
+    }
 }

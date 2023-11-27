@@ -1,5 +1,10 @@
 package Middle.LLVMIR.Instruction.IOInstr;
 
+import Backend.AsmBuilder;
+import Backend.InstrAsm.AsmInstrLi;
+import Backend.InstrAsm.AsmInstrOp;
+import Backend.InstrAsm.AsmInstrSyscall;
+import Backend.Register;
 import Middle.LLVMIR.IRValue;
 import Middle.LLVMIR.Instruction.IRInstr;
 import Middle.LLVMIR.Instruction.IRInstrType;
@@ -13,5 +18,11 @@ public class IRInstrPutInt extends IRInstr {
 
     public String toString() {
         return "call void @putint(i32 " + operands.get(0).getName() + ")";
+    }
+
+    public void generateAsm() {
+        AsmBuilder.getInstance().asmGetOperand(operands.get(0), Register.A0);
+        new AsmInstrLi(Register.V0, 1);
+        new AsmInstrSyscall(AsmInstrOp.SYSCALL);
     }
 }

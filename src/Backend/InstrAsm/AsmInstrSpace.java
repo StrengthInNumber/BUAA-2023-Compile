@@ -5,7 +5,7 @@ public class AsmInstrSpace extends AsmInstr {
     private int size;
 
     public AsmInstrSpace(String name, int size) {
-        super(AsmInstrOp.SPACE);
+        super(AsmInstrOp.SPACE, 2);
         this.name = name;
         this.size = size;
     }

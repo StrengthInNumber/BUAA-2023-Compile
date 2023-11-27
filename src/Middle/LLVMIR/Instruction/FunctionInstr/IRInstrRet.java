@@ -1,5 +1,9 @@
 package Middle.LLVMIR.Instruction.FunctionInstr;
 
+import Backend.AsmBuilder;
+import Backend.InstrAsm.AsmInstrJump;
+import Backend.InstrAsm.AsmInstrOp;
+import Backend.Register;
 import Middle.LLVMIR.IRValue;
 import Middle.LLVMIR.Instruction.IRInstr;
 import Middle.LLVMIR.Instruction.IRInstrType;
@@ -19,5 +23,13 @@ public class IRInstrRet extends IRInstr {
         } else {
             return "ret " + operands.get(0).getType() + " " + operands.get(0).getName();
         }
+    }
+
+    @Override
+    public void generateAsm() {
+        if(!operands.isEmpty()) {
+            AsmBuilder.getInstance().asmGetOperand(operands.get(0), Register.V0);
+        }
+        new AsmInstrJump(AsmInstrOp.JR, Register.RA);
     }
 }

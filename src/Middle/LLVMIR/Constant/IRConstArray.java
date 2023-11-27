@@ -12,6 +12,13 @@ public class IRConstArray extends IRConst {
         this.ints = ints;
     }
 
+    public ArrayList<Integer> getVal() {
+        ArrayList<Integer> vals = new ArrayList<>();
+        for(IRConstInt ic : ints) {
+            vals.add(ic.getVal());
+        }
+        return vals;
+    }
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("[");

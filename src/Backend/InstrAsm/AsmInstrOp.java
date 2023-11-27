@@ -25,7 +25,11 @@ public enum AsmInstrOp {
     //JUMP
     J, JAL, JR,
     //GLOBAL
-    WORD, ASCIIZ, SPACE;
+    WORD, ASCIIZ, SPACE,
+    //BRANCH
+    BEQ,BNE,
+
+    COMMENT;
     public String toString() {
         return name().toLowerCase();
     }

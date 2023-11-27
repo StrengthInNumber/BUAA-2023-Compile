@@ -9,6 +9,10 @@ public class IRConstInt extends IRConst {
         this.val = val;
     }
 
+    public int getVal() {
+        return val;
+    }
+
     public String toString() {
         return String.valueOf(val);
     }

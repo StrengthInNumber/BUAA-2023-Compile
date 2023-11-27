@@ -3,11 +3,10 @@ package Backend.InstrAsm;
 import Backend.Register;
 
 public class AsmInstrHiLo extends AsmInstr {
-    private AsmInstrOp op;
     private Register rd;
 
     public AsmInstrHiLo(AsmInstrOp op, Register rd) {
-        super(op);
+        super(op, 2);
         this.rd = rd;
     }
 

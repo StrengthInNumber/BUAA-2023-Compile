@@ -1,5 +1,6 @@
 package Middle.LLVMIR.Instruction;
 
+import Backend.AsmBuilder;
 import Middle.LLVMIR.IRValue;
 import Middle.LLVMIR.Type.IRIntegerType;
 import Middle.LLVMIR.Type.IRType;
@@ -18,5 +19,10 @@ public class IRInstrZext extends IRInstr {
                 + operands.get(0).getType() + " "
                 + operands.get(0).getName() + " to "
                 + targetType;
+    }
+
+    public void generateAsm() {
+        AsmBuilder.getInstance().pushToStackAt(this,
+                AsmBuilder.getInstance().getOffsetOnStack(operands.get(0)));
     }
 }

@@ -11,7 +11,7 @@ public class AsmInstrAlu extends AsmInstr {
     private int number;
 
     public AsmInstrAlu(AsmInstrOp op, Register rd, Register rs, Register rt) {
-        super(op);
+        super(op, 2);
         this.rd = rd;
         this.rs = rs;
         this.rt = rt;
@@ -19,14 +19,27 @@ public class AsmInstrAlu extends AsmInstr {
     }
 
     public AsmInstrAlu(AsmInstrOp op, Register rd, Register rs, int number) {
-        super(op);
+        super(op, 2);
         this.rd = rd;
         this.rs = rs;
         this.rt = null;
         this.number = number;
     }
 
+    public AsmInstrAlu(AsmInstrOp op, Register rs, Register rt) {
+        super(op, 2);
+        this.rd = null;
+        this.rs = rs;
+        this.rt = rt;
+    }
+
     public String toString() {
-        return op + " " + rd + " " + rs + " " + Objects.requireNonNullElseGet(rt, () -> number);
+        if(rd == null) {
+            return op + " " + rs + " " + rt;
+        } else if(rt == null) {
+            return op + " " + rd + " " + rs + " " + number;
+        } else {
+            return op + " " + rd + " " + rs + " " + rt;
+        }
     }
 }

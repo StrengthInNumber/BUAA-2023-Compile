@@ -1,5 +1,8 @@
 package Middle.LLVMIR;
 
+import Backend.InstrAsm.AsmInstrJump;
+import Backend.InstrAsm.AsmInstrLabel;
+import Backend.InstrAsm.AsmInstrOp;
 import Frontend.Parser.CompUnit;
 import Frontend.Parser.DeclAndDef.Decl;
 import Middle.LLVMIR.Function.IRFunction;
@@ -11,11 +14,13 @@ import java.util.ArrayList;
 public class IRModule extends IRValue {
     private ArrayList<IRGlobalVar> globalVars;
     private ArrayList<IRFunction> functions;
+    private ArrayList<IRString> strings;
 
     public IRModule(){
         super(IROtherType.MODULE);
         globalVars = new ArrayList<>();
         functions = new ArrayList<>();
+        strings = new ArrayList<>();
     }
 
     public void addGlobalVar(IRGlobalVar gv){
@@ -24,6 +29,10 @@ public class IRModule extends IRValue {
 
     public void addFunction(IRFunction f){
        functions.add(f);
+    }
+
+    public void addIRString(IRString s) {
+        strings.add(s);
     }
 
     public String toString() {
@@ -38,5 +47,20 @@ public class IRModule extends IRValue {
             sb.append(f);
         }
         return sb.toString();
+    }
+
+    public void generateAsm() {
+        for(IRGlobalVar gv : globalVars) {
+            gv.generateAsm();
+        }
+        for(IRString s : strings) {
+            s.generateAsm();
+        }
+        new AsmInstrJump(AsmInstrOp.JAL, "main");
+        new AsmInstrJump(AsmInstrOp.J, "END");
+        for(IRFunction f :functions){
+            f.generateAsm();
+        }
+        new AsmInstrLabel("END");
     }
 }

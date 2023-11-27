@@ -2,14 +2,13 @@ package Backend.InstrAsm;
 
 import Backend.Register;
 
-public class AsmInstrCmp {
-    private AsmInstrOp op;
+public class AsmInstrCmp extends AsmInstr {
     private Register rd;
     private Register rs;
     private Register rt;
 
     public AsmInstrCmp(AsmInstrOp op, Register rd, Register rs, Register rt) {
-        this.op = op;
+        super(op, 2);
         this.rd = rd;
         this.rs = rs;
         this.rt = rt;
@@ -19,5 +18,4 @@ public class AsmInstrCmp {
     public String toString() {
         return op + " " + rd + " " + rs + " " + rt;
     }
-
 }

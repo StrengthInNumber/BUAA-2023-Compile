@@ -6,9 +6,8 @@ public class AsmInstrLa extends AsmInstr{
     private Register rd;
     private String label;
 
-    public AsmInstrLa(AsmInstrOp op, Register rd, String label) {
-        super(op);
-        assert op == AsmInstrOp.LA;
+    public AsmInstrLa(Register rd, String label) {
+        super(AsmInstrOp.LA, 2);
         this.rd = rd;
         this.label = label;
     }

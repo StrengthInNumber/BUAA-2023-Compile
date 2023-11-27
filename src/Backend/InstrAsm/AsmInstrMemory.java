@@ -9,7 +9,7 @@ public class AsmInstrMemory extends AsmInstr {
     private String label;
 
     public AsmInstrMemory(AsmInstrOp op, Register rd, Register base, Integer offset) {
-        super(op);
+        super(op, 2);
         this.rd = rd;
         this.base = base;
         this.offset = offset;
@@ -17,7 +17,7 @@ public class AsmInstrMemory extends AsmInstr {
     }
 
     public AsmInstrMemory(AsmInstrOp op, Register rd, String label, Integer offset) {
-        super(op);
+        super(op, 2);
         this.rd = rd;
         this.base = null;
         this.offset = offset;

@@ -6,9 +6,8 @@ public class AsmInstrLi extends AsmInstr {
     private Register rd;
     private int number;
 
-    public AsmInstrLi(AsmInstrOp op, Register rd, Integer number) {
-        super(op);
-        assert op == AsmInstrOp.LI;
+    public AsmInstrLi(Register rd, Integer number) {
+        super(AsmInstrOp.LI, 2);
         this.rd = rd;
         this.number = number;
     }

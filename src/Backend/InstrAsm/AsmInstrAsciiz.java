@@ -5,7 +5,7 @@ public class AsmInstrAsciiz extends AsmInstr {
     private String content;
 
     public AsmInstrAsciiz(String name, String content) {
-        super(AsmInstrOp.ASCIIZ);
+        super(AsmInstrOp.ASCIIZ, 1);
         this.name = name;
         this.content = content.replace("\n", "\\n");
     }
