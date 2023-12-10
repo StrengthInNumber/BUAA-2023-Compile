@@ -1,0 +1,85 @@
+declare i32 @getint()
+declare void @putint(i32)
+declare void @putch(i32)
+define dso_local void @f_print(i32 %FParam_0) {
+BB_0:
+call void @putch(i32 10)
+call void @putch(i32 102)
+call void @putch(i32 50)
+call void @putch(i32 40)
+call void @putch(i32 41)
+call void @putch(i32 32)
+call void @putch(i32 102)
+call void @putch(i32 108)
+call void @putch(i32 97)
+call void @putch(i32 103)
+call void @putch(i32 32)
+call void @putch(i32 58)
+call void @putch(i32 32)
+call void @putint(i32 %FParam_0)
+ret void
+}
+
+define dso_local i32 @f_f2(i32 %FParam_1,i32 %FParam_2) {
+BB_1:
+%Local_6 = icmp sle i32 %FParam_1, 10
+%Local_7 = zext i1 %Local_6 to i32
+%Local_8 = icmp ne i32 %Local_7, 0
+br i1 %Local_8, label %BB_4, label %BB_9
+BB_2:
+move i32 %Local_35, 1
+br label %BB_3
+BB_3:
+%Local_14 = icmp sle i32 %FParam_1, 10
+%Local_15 = zext i1 %Local_14 to i32
+%Local_16 = icmp ne i32 %Local_15, 0
+br i1 %Local_16, label %BB_7, label %BB_11
+BB_4:
+%Local_10 = icmp sle i32 %FParam_2, 10
+%Local_11 = zext i1 %Local_10 to i32
+%Local_12 = icmp ne i32 %Local_11, 0
+br i1 %Local_12, label %BB_2, label %BB_10
+BB_5:
+move i32 %Local_34, 1
+br label %BB_6
+BB_6:
+call void @putch(i32 102)
+call void @putch(i32 108)
+call void @putch(i32 97)
+call void @putch(i32 103)
+call void @putch(i32 32)
+call void @putch(i32 105)
+call void @putch(i32 110)
+call void @putch(i32 32)
+call void @putch(i32 102)
+call void @putch(i32 58)
+call void @putint(i32 %Local_34)
+call void @putch(i32 10)
+ret i32 %Local_34
+BB_7:
+%Local_18 = icmp sgt i32 %FParam_2, 10
+%Local_19 = zext i1 %Local_18 to i32
+%Local_20 = icmp ne i32 %Local_19, 0
+br i1 %Local_20, label %BB_5, label %BB_12
+BB_9:
+move i32 %Local_35, 0
+br label %BB_3
+BB_10:
+move i32 %Local_35, 0
+br label %BB_3
+BB_11:
+move i32 %Local_34, %Local_35
+br label %BB_6
+BB_12:
+move i32 %Local_34, %Local_35
+br label %BB_6
+}
+
+define dso_local i32 @main() {
+BB_8:
+%Local_29 = call i32 @getint()
+%Local_30 = call i32 @getint()
+%Local_31 = call i32 @f_f2(i32 %Local_29, i32 %Local_30)
+ret i32 0
+}
+

@@ -3,27 +3,26 @@ package Middle.LLVMIR.Instruction;
 import Backend.AsmBuilder;
 import Backend.InstrAsm.*;
 import Backend.Register;
-import Middle.LLVMIR.Constant.IRConstInt;
 import Middle.LLVMIR.IRValue;
 import Middle.LLVMIR.Type.IRIntegerType;
 
 public class IRInstrIcmp extends IRInstr {
     public IRInstrIcmp(String name, IRInstrType instrType, boolean autoInsert, IRValue op1, IRValue op2) {
         super(name, instrType, IRIntegerType.INT1, autoInsert);
-        operands.add(op1);
-        operands.add(op2);
+        addUseValue(op1);
+        addUseValue(op2);
     }
 
     public String toString() {
         return name + " = " + "icmp " + instrType.toString().toLowerCase()
                 + " i32 "
-                + operands.get(0).getName()
-                + ", " + operands.get(1).getName();
+                + useValues.get(0).getName()
+                + ", " + useValues.get(1).getName();
     }
 
     public void generateAsm() {
-        AsmBuilder.getInstance().asmGetOperand(operands.get(0), Register.K0);
-        AsmBuilder.getInstance().asmGetOperand(operands.get(1), Register.K1);
+        AsmBuilder.getInstance().asmGetOperand(useValues.get(0), Register.K0);
+        AsmBuilder.getInstance().asmGetOperand(useValues.get(1), Register.K1);
         switch (instrType) {
             case EQ:
                 new AsmInstrCmp(AsmInstrOp.SEQ, Register.K0, Register.K0, Register.K1);

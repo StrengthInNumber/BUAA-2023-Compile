@@ -1,0 +1,124 @@
+.data
+str0: .asciiz "\nf2() flag : "
+str1: .asciiz ""
+str2: .asciiz "flag in f:"
+str3: .asciiz "\n"
+.text
+jal main
+j END
+f_print:
+BB_0:
+la $a0 str0
+li $v0 4
+syscall
+lw $a0 -4($sp)
+li $v0 1
+syscall
+jr $ra
+f_f2:
+BB_1:
+lw $k0 -4($sp)
+li $k1 10
+sle $k0 $k0 $k1
+sw $k0 -12($sp)
+lw $k0 -12($sp)
+li $k1 0
+sne $k0 $k0 $k1
+sw $k0 -16($sp)
+lw $k0 -16($sp)
+beq $k0 $zero BB_9
+j BB_4
+BB_2:
+li $k0 1
+sw $k0 -20($sp)
+j BB_3
+BB_3:
+lw $k0 -4($sp)
+li $k1 10
+sle $k0 $k0 $k1
+sw $k0 -24($sp)
+lw $k0 -24($sp)
+li $k1 0
+sne $k0 $k0 $k1
+sw $k0 -28($sp)
+lw $k0 -28($sp)
+beq $k0 $zero BB_11
+j BB_7
+BB_4:
+lw $k0 -8($sp)
+li $k1 10
+sle $k0 $k0 $k1
+sw $k0 -32($sp)
+lw $k0 -32($sp)
+li $k1 0
+sne $k0 $k0 $k1
+sw $k0 -36($sp)
+lw $k0 -36($sp)
+beq $k0 $zero BB_10
+j BB_2
+BB_5:
+li $k0 1
+sw $k0 -40($sp)
+j BB_6
+BB_6:
+la $a0 str2
+li $v0 4
+syscall
+lw $a0 -40($sp)
+li $v0 1
+syscall
+la $a0 str3
+li $v0 4
+syscall
+lw $v0 -40($sp)
+jr $ra
+BB_7:
+lw $k0 -8($sp)
+li $k1 10
+sgt $k0 $k0 $k1
+sw $k0 -44($sp)
+lw $k0 -44($sp)
+li $k1 0
+sne $k0 $k0 $k1
+sw $k0 -48($sp)
+lw $k0 -48($sp)
+beq $k0 $zero BB_12
+j BB_5
+BB_9:
+li $k0 0
+sw $k0 -20($sp)
+j BB_3
+BB_10:
+li $k0 0
+sw $k0 -20($sp)
+j BB_3
+BB_11:
+lw $k0 -20($sp)
+sw $k0 -40($sp)
+j BB_6
+BB_12:
+lw $k0 -20($sp)
+sw $k0 -40($sp)
+j BB_6
+main:
+BB_8:
+li $v0 5
+syscall
+sw $v0 -4($sp)
+li $v0 5
+syscall
+sw $v0 -8($sp)
+sw $sp -12($sp)
+sw $ra -16($sp)
+lw $k0 -4($sp)
+sw $k0 -20($sp)
+lw $k0 -8($sp)
+sw $k0 -24($sp)
+addi $sp $sp -16
+jal f_f2
+lw $ra 0($sp)
+lw $sp 4($sp)
+sw $v0 -28($sp)
+li $v0 0
+jr $ra
+END:

@@ -78,9 +78,9 @@ public class ForOpt extends ASTNode implements StmtOpt{
         if(forStmt2 != null){
             forStmt2.checkError(table);
         }
-        table.setInCircle(true);
+        table.getInCircle();
         stmt.checkError(table);
-        table.setInCircle(false);
+        table.getOutCircle();
     }
 
     public void generateIR(SymbolTable table) {

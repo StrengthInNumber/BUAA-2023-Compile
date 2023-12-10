@@ -8,4 +8,12 @@ public class IRUse {
         this.user = user;
         this.value = value;
     }
+
+    public IRUser getUser() {
+        return user;
+    }
+
+    public IRValue getValue() {
+        return value;
+    }
 }

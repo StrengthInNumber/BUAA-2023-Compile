@@ -5,28 +5,37 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="62a43ca6-0efc-45c6-a156-d28ac13c7f44" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/Frontend/Parser/BlockAndStmt/Statements/LValEqStmt.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Frontend/Parser/BlockAndStmt/Statements/StmtOpt.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Frontend/Parser/Expression/Cond.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Frontend/Parser/Expression/Exp.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Frontend/Parser/Expression/LVal.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Middle/LLVMIR/Instruction/IRInstrPCopy.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Middle/LLVMIR/Instruction/IRInstrPhi.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Middle/LLVMIR/Instruction/MemoryInstr/IRInstrMove.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Frontend/Parser/BlockAndStmt/Block.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Frontend/Parser/BlockAndStmt/Block.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Frontend/Parser/BlockAndStmt/BlockItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Frontend/Parser/BlockAndStmt/BlockItem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Frontend/Parser/BlockAndStmt/Statements/BreakStmt.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Frontend/Parser/BlockAndStmt/Statements/BreakStmt.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Frontend/Parser/BlockAndStmt/Statements/ContinueStmt.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Frontend/Parser/BlockAndStmt/Statements/ContinueStmt.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Frontend/Parser/BlockAndStmt/Statements/ExpsStmt.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Frontend/Parser/BlockAndStmt/Statements/ExpStmt.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Frontend/Parser/BlockAndStmt/Statements/ForStmt.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Frontend/Parser/BlockAndStmt/Statements/ForStmt.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Frontend/Parser/BlockAndStmt/Statements/IfStmt.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Frontend/Parser/BlockAndStmt/Statements/IfStmt.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Frontend/Parser/BlockAndStmt/Statements/LValEqExp.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Frontend/Parser/BlockAndStmt/Statements/LValEqGetint.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Frontend/Parser/BlockAndStmt/Statements/PrintfStmt.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Frontend/Parser/BlockAndStmt/Statements/PrintfStmt.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Frontend/Parser/BlockAndStmt/Statements/ReturnStmt.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Frontend/Parser/BlockAndStmt/Statements/ReturnStmt.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Frontend/Parser/BlockAndStmt/Stmt.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Frontend/Parser/BlockAndStmt/Stmt.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Frontend/Parser/DeclAndDef/Constant/ConstDecl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Frontend/Parser/DeclAndDef/Constant/ConstDecl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Frontend/Parser/DeclAndDef/Constant/ConstInitVal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Frontend/Parser/DeclAndDef/Constant/ConstInitVal.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Frontend/Parser/DeclAndDef/Function/FuncFParam.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Frontend/Parser/DeclAndDef/Function/FuncFParam.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Frontend/Parser/DeclAndDef/Variate/InitVal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Frontend/Parser/DeclAndDef/Variate/InitVal.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Backend/AsmBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Backend/AsmBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Compiler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Compiler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Frontend/Parser/BlockAndStmt/Statements/ForOpt.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Frontend/Parser/BlockAndStmt/Statements/ForOpt.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Middle/IRBuilderLoop.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Middle/LLVMIR/IRBuilderLoop.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Middle/LLVMIR/BasicBlock/IRBasicBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Middle/LLVMIR/BasicBlock/IRBasicBlock.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Middle/LLVMIR/Function/IRFunction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Middle/LLVMIR/Function/IRFunction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Middle/LLVMIR/IRBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Middle/LLVMIR/IRBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Middle/LLVMIR/IRModule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Middle/LLVMIR/IRModule.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Middle/LLVMIR/IRUse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Middle/LLVMIR/IRUse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Middle/LLVMIR/IRUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Middle/LLVMIR/IRUser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Middle/LLVMIR/IRValue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Middle/LLVMIR/IRValue.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Middle/LLVMIR/Instruction/FunctionInstr/IRInstrCall.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Middle/LLVMIR/Instruction/FunctionInstr/IRInstrCall.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Middle/LLVMIR/Instruction/FunctionInstr/IRInstrRet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Middle/LLVMIR/Instruction/FunctionInstr/IRInstrRet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Middle/LLVMIR/Instruction/IOInstr/IRInstrPutInt.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Middle/LLVMIR/Instruction/IOInstr/IRInstrPutInt.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Middle/LLVMIR/Instruction/IRInstr.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Middle/LLVMIR/Instruction/IRInstr.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Middle/LLVMIR/Instruction/IRInstrAlu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Middle/LLVMIR/Instruction/IRInstrAlu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Middle/LLVMIR/Instruction/IRInstrBranch.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Middle/LLVMIR/Instruction/IRInstrBranch.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Middle/LLVMIR/Instruction/IRInstrGEP.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Middle/LLVMIR/Instruction/IRInstrGEP.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Middle/LLVMIR/Instruction/IRInstrIcmp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Middle/LLVMIR/Instruction/IRInstrIcmp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Middle/LLVMIR/Instruction/IRInstrJump.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Middle/LLVMIR/Instruction/IRInstrJump.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Middle/LLVMIR/Instruction/IRInstrType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Middle/LLVMIR/Instruction/IRInstrType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Middle/LLVMIR/Instruction/IRInstrZext.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Middle/LLVMIR/Instruction/IRInstrZext.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Middle/LLVMIR/Instruction/MemoryInstr/IRInstrAlloca.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Middle/LLVMIR/Instruction/MemoryInstr/IRInstrAlloca.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Middle/LLVMIR/Instruction/MemoryInstr/IRInstrLoad.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Middle/LLVMIR/Instruction/MemoryInstr/IRInstrLoad.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Middle/LLVMIR/Instruction/MemoryInstr/IRInstrStore.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Middle/LLVMIR/Instruction/MemoryInstr/IRInstrStore.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Middle/Symbol/SymbolTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Middle/Symbol/SymbolTable.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,10 +75,10 @@
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;onboarding.tips.debug.path&quot;: &quot;/Users/hyk/Desktop/大三上/编译/compiler/src/Main.java&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.fonts.default&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;configurable.group.editor&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -85,11 +94,61 @@
       <workItem from="1696819404481" duration="1899000" />
       <workItem from="1696834472819" duration="5128000" />
       <workItem from="1696856358058" duration="5057000" />
+      <workItem from="1700663912088" duration="4198000" />
+      <workItem from="1700753209163" duration="33247000" />
+      <workItem from="1700901480225" duration="222000" />
+      <workItem from="1700917372828" duration="105000" />
+      <workItem from="1701098538128" duration="2524000" />
+      <workItem from="1701135699711" duration="2137000" />
+      <workItem from="1701603070687" duration="8801000" />
+      <workItem from="1701657578806" duration="16114000" />
+      <workItem from="1701832742455" duration="16163000" />
+      <workItem from="1701928620890" duration="478000" />
+      <workItem from="1701929108626" duration="23760000" />
+      <workItem from="1702051900898" duration="34604000" />
     </task>
+    <task id="LOCAL-00001" summary="asm unfinished">
+      <option name="closed" value="true" />
+      <created>1700658367803</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1700658367803</updated>
+    </task>
+    <task id="LOCAL-00002" summary="asm finished">
+      <option name="closed" value="true" />
+      <created>1701100947934</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1701100947934</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="asm unfinished" />
+    <MESSAGE value="asm finished" />
+    <option name="LAST_COMMIT_MESSAGE" value="asm finished" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/Middle/LLVMIR/BasicBlock/IRBasicBlock.java</url>
+          <line>310</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+    <pin-to-top-manager>
+      <pinned-members>
+        <PinnedItemInfo parentTag="java.util.ArrayList$Itr" memberName="this$0" />
+      </pinned-members>
+    </pin-to-top-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

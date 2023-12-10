@@ -63,4 +63,74 @@ public class IRModule extends IRValue {
         }
         new AsmInstrLabel("END");
     }
+
+    public void optimize() {
+        prepareForMem2Reg();
+    }
+
+    private void prepareForMem2Reg() {
+        deleteInstrAfter1stBr();
+        drawCFG();
+        deleteUnreachableBB();
+        getDom();
+        getIDom();
+        drawDF();
+        mem2Reg();
+//        for(IRFunction f : functions) {
+//            f.printDF();
+//        }
+        deleteDeadCode();
+        removePhi();
+    }
+    public void deleteInstrAfter1stBr() {
+        //删除所有基本块第一条跳转指令（jump、br、return）后的所有指令
+        for(IRFunction f : functions) {
+            f.deleteInstrAfter1stBr();
+        }
+    }
+
+    public void drawCFG() {
+        for(IRFunction f : functions) {
+            f.drawCFG();
+        }
+    }
+
+    public void deleteUnreachableBB() {
+        for(IRFunction f : functions) {
+            f.deleteUnreachableBB();
+        }
+    }
+    public void getDom() {
+        for(IRFunction f : functions) {
+            f.getDom();
+        }
+    }
+
+    public void getIDom() {
+        for(IRFunction f : functions) {
+            f.getIDom();
+        }
+    }
+    public void drawDF() {
+        for(IRFunction f : functions) {
+            f.drawDF();
+        }
+    }
+    public void mem2Reg() {
+        for(IRFunction f : functions) {
+            f.mem2Reg();
+        }
+    }
+
+    public void deleteDeadCode() {
+        for(IRFunction f : functions) {
+            f.deleteDeadCode();
+        }
+    }
+
+    public void removePhi() {
+        for(IRFunction f : functions) {
+            f.removePhi();
+        }
+    }
 }

@@ -1,6 +1,5 @@
 package Middle.LLVMIR;
 
-import Middle.IRBuilderLoop;
 import Middle.LLVMIR.BasicBlock.IRBasicBlock;
 import Middle.LLVMIR.Constant.IRConstInt;
 import Middle.LLVMIR.Function.IRFunction;
@@ -76,7 +75,7 @@ public class IRBuilder {
 
     public void addInstr(IRInstr i) {
         curBasicBlock.addInstr(i);
-        i.setParentBB(curBasicBlock);
+        i.setBelongedBB(curBasicBlock);
     }
 
     public void addGlobalVar(IRGlobalVar gv) {

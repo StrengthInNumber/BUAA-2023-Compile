@@ -37,4 +37,8 @@ public enum IRInstrType {
     GETINT,
     PUTINT,
     PUTCH,
+
+    PHI,
+    PCOPY,
+    MOVE,
 }

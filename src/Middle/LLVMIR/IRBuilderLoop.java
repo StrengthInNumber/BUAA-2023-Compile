@@ -1,4 +1,4 @@
-package Middle;
+package Middle.LLVMIR;
 
 import Middle.LLVMIR.BasicBlock.IRBasicBlock;
 

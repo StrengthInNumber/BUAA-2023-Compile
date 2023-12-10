@@ -35,7 +35,6 @@ public class Compiler {
         Parser parser = new Parser(new TokensReadControl(lexer.getTokens()));
         parser.parse();
         CompUnit cu = parser.getCompUnit();
-        cu.generateIR();
         //System.out.println(IRBuilder.getInstance().getCurModule());
         File file1 = new File("output.txt");
         if(!file1.exists()) {
@@ -66,15 +65,21 @@ public class Compiler {
         if(errorCheck) {
             parser.checkError();
             if(ErrorTable.getInstance().toString().isEmpty()) {
+                cu.generateIR();
                 if(printLLVM) {
+                    //pw3.print(IRBuilder.getInstance().getCurModule());
+                    IRBuilder.getInstance().getCurModule().optimize();
                     pw3.print(IRBuilder.getInstance().getCurModule());
                 }
                 if(printMips) {
                     IRBuilder.getInstance().getCurModule().generateAsm();
                     pw4.print(AsmBuilder.getInstance());
                 }
+            } else {
+                pw2.print(ErrorTable.getInstance());
             }
         } else {
+            cu.generateIR();
             if(printLLVM) {
                 pw3.print(IRBuilder.getInstance().getCurModule());
             }

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class IRValue {
     protected IRType type;
     protected String name;
-    private ArrayList<IRUse> uses;
+    protected ArrayList<IRUse> uses;
     public IRValue(String name, IRType type){
         this.type = type;
         this.name = name;
@@ -26,5 +26,19 @@ public class IRValue {
 
     public IRType getType() {
         return type;
+    }
+
+    public void addUse(IRUser user) {
+        uses.add(new IRUse(user, this));
+    }
+
+    public void removeUse(IRUser user) {
+        IRUse toRemove = null;
+        for(IRUse u : uses) {
+            if(u.getUser() == user) {
+                toRemove = u;
+            }
+        }
+        uses.remove(toRemove);
     }
 }

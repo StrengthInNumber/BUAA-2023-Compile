@@ -13,22 +13,22 @@ public class IRInstrRet extends IRInstr {
     public IRInstrRet(IRValue returnValue, boolean autoInsert) {
         super(IRInstrType.RET, IRVoidType.VOID, autoInsert);
         if(returnValue != null) {
-            operands.add(returnValue);
+            addUseValue(returnValue);
         }
     }
 
     public String toString() {
-        if(operands.isEmpty()) {
+        if(useValues.isEmpty()) {
             return "ret void";
         } else {
-            return "ret " + operands.get(0).getType() + " " + operands.get(0).getName();
+            return "ret " + useValues.get(0).getType() + " " + useValues.get(0).getName();
         }
     }
 
     @Override
     public void generateAsm() {
-        if(!operands.isEmpty()) {
-            AsmBuilder.getInstance().asmGetOperand(operands.get(0), Register.V0);
+        if(!useValues.isEmpty()) {
+            AsmBuilder.getInstance().asmGetOperand(useValues.get(0), Register.V0);
         }
         new AsmInstrJump(AsmInstrOp.JR, Register.RA);
     }

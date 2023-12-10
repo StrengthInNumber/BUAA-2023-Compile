@@ -13,15 +13,15 @@ import Middle.LLVMIR.Type.IRVoidType;
 public class IRInstrPutInt extends IRInstr {
     public IRInstrPutInt(IRValue source, boolean autoInsert) {
         super(IRInstrType.PUTINT, IRVoidType.VOID, autoInsert);
-        operands.add(source);
+        addUseValue(source);
     }
 
     public String toString() {
-        return "call void @putint(i32 " + operands.get(0).getName() + ")";
+        return "call void @putint(i32 " + useValues.get(0).getName() + ")";
     }
 
     public void generateAsm() {
-        AsmBuilder.getInstance().asmGetOperand(operands.get(0), Register.A0);
+        AsmBuilder.getInstance().asmGetOperand(useValues.get(0), Register.A0);
         new AsmInstrLi(Register.V0, 1);
         new AsmInstrSyscall(AsmInstrOp.SYSCALL);
     }

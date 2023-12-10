@@ -13,7 +13,7 @@ public class SymbolTable {
     private ValueType returnType; //为函数参数表时存储返回值类型
     private int depth;
     private boolean hasReturned; //当前函数内是否出现 return 语句
-    private boolean inCircle; //当前是否在循环语句内
+    private int circleCnt; //当前是否在循环语句内
     private ArrayList<ValueType> funcFParamTypes = new ArrayList<>();
     private ArrayList<Integer> funcFParamDims = new ArrayList<>();
 
@@ -22,7 +22,7 @@ public class SymbolTable {
         this.parent = null;
         this.depth = depth;
         hasReturned = false;
-        this.inCircle = false;
+        circleCnt = 0;
         returnType = null;
     }
 
@@ -31,7 +31,7 @@ public class SymbolTable {
         symbols = new HashMap<>();
         this.depth = parent.depth + 1;
         this.hasReturned = false;
-        this.inCircle = parent.inCircle;
+        this.circleCnt = parent.circleCnt;
         this.returnType = parent.returnType;
     }
 
@@ -40,12 +40,16 @@ public class SymbolTable {
         symbols = new HashMap<>();
         this.depth = parent.depth + 1;
         this.hasReturned = false;
-        this.inCircle = parent.inCircle;
+        this.circleCnt = parent.circleCnt;
         this.returnType = returnType;
     }
 
-    public void setInCircle(boolean inCircle) {
-        this.inCircle = inCircle;
+    public void getInCircle() {
+        circleCnt++;
+    }
+
+    public void getOutCircle() {
+        circleCnt--;
     }
 
     public Symbol getSymbol(String name) {
@@ -102,7 +106,7 @@ public class SymbolTable {
     }
 
     public boolean isInCircle() {
-        return inCircle;
+        return circleCnt != 0;
     }
 
     public boolean haveSymbol(String name, boolean isFunc) {

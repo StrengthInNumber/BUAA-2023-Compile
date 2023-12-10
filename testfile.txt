@@ -1,0 +1,27 @@
+
+void print(int output) {
+    printf("\nf2() flag : %d", output);
+    return;
+}
+
+int f2(int a, int b) {
+    int flag;
+    if (a <= 10 && b <= 10) {
+        flag = 1;
+    }
+    if (a <= 10 && b > 10) {
+        flag = 1;
+    }
+    printf("flag in f:%d\n",flag);
+    return flag;
+}
+
+int main() {
+    int a,b,flag1,flag2,flag,i;
+    a = getint();
+    b = getint();
+    flag1=f2(a,b);
+    return 0;
+}
+
+

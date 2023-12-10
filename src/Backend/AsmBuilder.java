@@ -9,10 +9,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class AsmBuilder {
-    private static AsmBuilder asmBuilder = new AsmBuilder();
+    private static final AsmBuilder asmBuilder = new AsmBuilder();
     public static AsmBuilder getInstance() {return asmBuilder;}
-    private ArrayList<AsmInstr> dataInstructions = new ArrayList<>();
-    private ArrayList<AsmInstr> textInstructions = new ArrayList<>();
+    private final ArrayList<AsmInstr> dataInstructions = new ArrayList<>();
+    private final ArrayList<AsmInstr> textInstructions = new ArrayList<>();
     private int stackOffset = 0;
     private HashMap<IRValue, Integer> stackMap;
 
@@ -42,9 +42,14 @@ public class AsmBuilder {
     }
 
     public int pushToStack(IRValue value, int size) {
-        stackOffset -= size;
-        stackMap.put(value, stackOffset);
-        return stackOffset;
+        Integer currentOffset = stackMap.get(value);
+        if(currentOffset == null) {
+            stackOffset -= size;
+            stackMap.put(value, stackOffset);
+            return stackOffset;
+        } else {
+            return currentOffset;
+        }
     }
 
     public void pushToStackAt(IRValue value, int location) {
@@ -69,7 +74,7 @@ public class AsmBuilder {
         } else {
             if(offset == null) {
                 offset = pushToStack(op, 4);
-                new AsmComment("curOffset=" + stackOffset);
+                //new AsmComment("curOffset=" + stackOffset);
             }
             new AsmInstrMemory(AsmInstrOp.LW, r, Register.SP, offset);
         }

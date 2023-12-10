@@ -9,20 +9,20 @@ import Middle.LLVMIR.Type.IRIntegerType;
 public class IRInstrAlu extends IRInstr {
     public IRInstrAlu(String name, IRInstrType instrType, boolean autoInsert, IRValue op1, IRValue op2) {
         super(name, instrType, IRIntegerType.INT32, autoInsert);
-        operands.add(op1);
-        operands.add(op2);
+        addUseValue(op1);
+        addUseValue(op2);
     }
 
     public String toString() {
         return name + " = " + instrType.toString().toLowerCase()
                 + " i32 "
-                + operands.get(0).getName()
-                + ", " + operands.get(1).getName();
+                + useValues.get(0).getName()
+                + ", " + useValues.get(1).getName();
     }
 
     public void generateAsm() {
-        AsmBuilder.getInstance().asmGetOperand(operands.get(0), Register.K0);
-        AsmBuilder.getInstance().asmGetOperand(operands.get(1), Register.K1);
+        AsmBuilder.getInstance().asmGetOperand(useValues.get(0), Register.K0);
+        AsmBuilder.getInstance().asmGetOperand(useValues.get(1), Register.K1);
         switch (instrType) {
             case ADD:
                 new AsmInstrAlu(AsmInstrOp.ADDU, Register.K0, Register.K0, Register.K1);
